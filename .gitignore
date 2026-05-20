@@ -25,7 +25,8 @@ secrets.json
 *.snk
 
 ## ASP.NET Core
-wwwroot/lib/   ## restored by libman; not committed
+# wwwroot/lib/ vendor files restored by libman; uncomment to stop tracking
+# wwwroot/lib/
 *.compiled
 publish/
 

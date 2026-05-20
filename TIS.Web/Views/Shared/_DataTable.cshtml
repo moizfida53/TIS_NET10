@@ -1,0 +1,74 @@
+@using TIS.Web.Models.DataTables
+@model DataTableViewModel
+
+@{
+    var colsJson = System.Text.Json.JsonSerializer.Serialize(
+        Model.Columns.Select(c => new
+        {
+            data = c.Data,
+            title = c.Title,
+            orderable = c.Orderable,
+            searchable = c.Searchable,
+            width = c.Width,
+            className = c.ClassName
+        }));
+}
+
+<div class="table-responsive">
+    <table id="@Model.Id" class="table table-bordered table-hover table-sm w-100"></table>
+</div>
+
+<script>
+(function () {
+    const cols = @Html.Raw(colsJson);
+
+    @foreach (var col in Model.Columns.Where(c => c.Render != null))
+    {
+        var idx = Model.Columns.ToList().IndexOf(col);
+        var render = col.Render ?? "";
+
+        if (render == "money")
+        {
+            <text>cols[@idx].render = d => d != null ? parseFloat(d).toLocaleString('en', {minimumFractionDigits:2}) : '';</text>
+        }
+        else if (render == "date")
+        {
+            <text>cols[@idx].render = d => d ? new Date(d).toLocaleDateString('en-GB') : '';</text>
+        }
+        else if (render == "bool")
+        {
+            <text>cols[@idx].render = d => d ? '<span class="badge bg-success">Yes</span>' : '<span class="badge bg-secondary">No</span>';</text>
+        }
+        else if (render.StartsWith("badge:"))
+        {
+            var color = render.Substring(6);
+            <text>cols[@idx].render = d => `<span class="badge bg-@color">${d ?? ''}</span>`;</text>
+        }
+    }
+
+    const opts = {
+        columns: cols,
+        pageLength: @Model.PageLength,
+        language: { search: '', searchPlaceholder: 'Search...' },
+        dom: "B<'row'<'col-sm-6'l><'col-sm-6'f>>rt<'row'<'col-sm-5'i><'col-sm-7'p>>",
+        buttons: @(Model.ShowExport ? "['copy','excel','csv','print']" : "[]"),
+    };
+
+    @if (Model.ServerSide)
+    {
+        <text>
+        opts.processing = true;
+        opts.serverSide = true;
+        opts.ajax = { url: '@Html.Raw(Model.AjaxUrl)', type: 'POST' };
+        </text>
+    }
+    else
+    {
+        <text>
+        opts.ajax = { url: '@Html.Raw(Model.AjaxUrl)', dataSrc: '' };
+        </text>
+    }
+
+    window['dt_@Model.Id'] = $('#@Model.Id').DataTable(opts);
+})();
+</script>

@@ -1,0 +1,128 @@
+@{
+    ViewData["Title"] = "Manage Call Types (Policy)";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="fw-bold mb-0">Manage Call Types</h5>
+    <button class="btn btn-sm btn-primary" id="btn-pol-add">+ Add Policy</button>
+</div>
+
+<table id="dt-pol" class="table table-sm table-bordered table-striped w-100">
+    <thead>
+        <tr>
+            <th>Provider</th><th>Trans Type</th><th>Description</th>
+            <th>Call Type</th><th>Line Type</th><th>Is All</th><th>Superimpose</th><th>Actions</th>
+        </tr>
+    </thead>
+</table>
+
+<!-- Add / Edit Policy Modal -->
+<div class="modal fade" id="modal-pol" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-pol-title">Add Policy</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="pol-id" />
+
+                <div class="row g-2 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Provider</label>
+                        <select id="pol-provider" class="form-select form-select-sm">
+                            <option value="">-- Select Provider --</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Trans Type</label>
+                        <select id="pol-transtype" class="form-select form-select-sm">
+                            <option value="">-- Select Trans Type --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row g-2 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Call Type</label>
+                        <select id="pol-calltype" class="form-select form-select-sm">
+                            <option value="">-- Select Call Type --</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Line Type</label>
+                        <select id="pol-linetype" class="form-select form-select-sm">
+                            <option value="">-- Select Line Type --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row g-2 mb-3">
+                    <div class="col-auto">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="pol-isall" />
+                            <label class="form-check-label" for="pol-isall">Apply to All Employees</label>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="pol-superimpose" />
+                            <label class="form-check-label" for="pol-superimpose">Superimpose Train</label>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="pol-alldesc" />
+                            <label class="form-check-label" for="pol-alldesc">All Descriptions</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Descriptions (hidden when IsAllDesc) -->
+                <div id="desc-section" class="mb-3">
+                    <label class="form-label">Descriptions</label>
+                    <select id="pol-desc" class="form-select form-select-sm" multiple size="5">
+                    </select>
+                    <div class="form-text">Hold Ctrl / Cmd to select multiple</div>
+                </div>
+
+                <!-- Employees (hidden when IsAll) -->
+                <div id="emp-section">
+                    <label class="form-label">Employees / Numbers</label>
+                    <select id="pol-emp" class="form-select form-select-sm" multiple size="6">
+                    </select>
+                    <div class="form-text">Hold Ctrl / Cmd to select multiple. Each option is Employee — Sub Number.</div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary btn-sm" id="btn-pol-save">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Policy Modal -->
+<div class="modal fade" id="modal-pol-del" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="del-pol-id" />
+                <p>Delete this policy rule?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-danger btn-sm" id="btn-pol-del-confirm">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/setting-policy.js"></script>
+}

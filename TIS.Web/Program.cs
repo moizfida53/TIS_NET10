@@ -1,29 +1,86 @@
-var builder = WebApplication.CreateBuilder(args);
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Negotiate;
+using QuestPDF.Infrastructure;
+using Serilog;
+using TIS.Data.Infrastructure;
+using TIS.Data.Repositories;
+using TIS.Data.Services;
+using TIS.Web.Auth;
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
+QuestPDF.Settings.License = LicenseType.Community;
 
-var app = builder.Build();
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(new ConfigurationBuilder()
+        .AddJsonFile("appsettings.json")
+        .Build())
+    .CreateBootstrapLogger();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+try
 {
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    var builder = WebApplication.CreateBuilder(args);
+
+    builder.Host.UseSerilog((ctx, lc) =>
+        lc.ReadFrom.Configuration(ctx.Configuration));
+
+    // ── Authentication: Windows AD (Negotiate) ──────────────────────────
+    builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
+        .AddNegotiate();
+
+    builder.Services.AddScoped<IClaimsTransformation, AdRoleClaimsTransformer>();
+
+    // ── Authorization policies ──────────────────────────────────────────
+    builder.Services.AddAuthorization(opts =>
+    {
+        opts.FallbackPolicy = opts.DefaultPolicy; // all routes require auth by default
+
+        opts.AddPolicy("SuperAdmin", p => p.RequireRole("SuperAdmin"));
+        opts.AddPolicy("Admin", p => p.RequireRole("Administrator", "SuperAdmin"));
+        opts.AddPolicy("Finance", p => p.RequireRole("Finance", "SuperAdmin"));
+        opts.AddPolicy("Manager", p => p.RequireRole("LineManager", "Administrator", "SuperAdmin"));
+        opts.AddPolicy("AdminOrFinance", p => p.RequireRole("Administrator", "Finance", "SuperAdmin"));
+    });
+
+    // ── Data layer ──────────────────────────────────────────────────────
+    var connStr = builder.Configuration.GetConnectionString("TIS")
+        ?? throw new InvalidOperationException("Connection string 'TIS' is missing from appsettings.json");
+
+    builder.Services.AddScoped<ISpRunner>(_ => new SpRunner(connStr));
+    builder.Services.AddScoped<IAdminRepository, AdminRepository>();
+    builder.Services.AddScoped<ISettingRepository, SettingRepository>();
+    builder.Services.AddScoped<IImportRepository>(sp => new ImportRepository(sp.GetRequiredService<ISpRunner>(), connStr));
+    builder.Services.AddScoped<ImportService>(sp => new ImportService(connStr, sp.GetRequiredService<IImportRepository>()));
+    builder.Services.AddScoped<IBillRepository>(sp => new BillRepository(sp.GetRequiredService<ISpRunner>(), connStr));
+
+    // ── MVC ─────────────────────────────────────────────────────────────
+    builder.Services.AddControllersWithViews();
+
+    var app = builder.Build();
+
+    if (!app.Environment.IsDevelopment())
+    {
+        app.UseExceptionHandler("/Home/Error");
+        app.UseHsts();
+    }
+
+    app.UseHttpsRedirection();
+    app.UseSerilogRequestLogging();
+    app.UseRouting();
+    app.UseAuthentication();
+    app.UseAuthorization();
+    app.MapStaticAssets();
+
+    app.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Admin}/{action=Index}/{id?}")
+        .WithStaticAssets();
+
+    app.Run();
 }
-
-app.UseHttpsRedirection();
-app.UseRouting();
-
-app.UseAuthorization();
-
-app.MapStaticAssets();
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
-
-
-app.Run();
+catch (Exception ex)
+{
+    Log.Fatal(ex, "TIS application terminated unexpectedly");
+}
+finally
+{
+    Log.CloseAndFlush();
+}

@@ -1,0 +1,140 @@
+@{
+    ViewData["Title"] = "Package Management";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="fw-bold mb-0">Package Management</h5>
+</div>
+
+<ul class="nav nav-tabs" id="pkgTabs">
+    <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tab-pkg">Packages</a></li>
+    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-roam">Data Roaming</a></li>
+</ul>
+
+<div class="tab-content border border-top-0 rounded-bottom p-3 bg-white">
+
+    <!-- ── Packages Tab ───────────────────────────────────────────── -->
+    <div class="tab-pane fade show active" id="tab-pkg">
+        <div class="mb-2 text-end">
+            <button class="btn btn-sm btn-primary" id="btn-pkg-add">+ Add Package</button>
+        </div>
+        <table id="dt-pkg" class="table table-sm table-bordered table-striped w-100">
+            <thead>
+                <tr><th>Package</th><th>Provider</th><th>Trans Type</th><th>Start Date</th><th>Unexpected</th><th>Actions</th></tr>
+            </thead>
+        </table>
+    </div>
+
+    <!-- ── Data Roaming Tab ───────────────────────────────────────── -->
+    <div class="tab-pane fade" id="tab-roam">
+        <div class="mb-2 text-end">
+            <button class="btn btn-sm btn-primary" id="btn-roam-add">+ Add Roaming</button>
+        </div>
+        <table id="dt-roam" class="table table-sm table-bordered table-striped w-100">
+            <thead><tr><th>Country</th><th>Operator</th><th>Actions</th></tr></thead>
+        </table>
+    </div>
+
+</div>
+
+<!-- ════ Package Add/Edit Modal ════ -->
+<div class="modal fade" id="modal-pkg" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-pkg-title">Add Package</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="pkg-id" />
+                <div class="row g-2 mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label form-label-sm">Provider <span class="text-danger">*</span></label>
+                        <select class="form-select form-select-sm" id="pkg-provider"></select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label form-label-sm">Start Date</label>
+                        <input type="text" class="form-control form-control-sm flatpickr" id="pkg-start" />
+                    </div>
+                    <div class="col-md-4 d-flex align-items-end">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="pkg-unexpected" />
+                            <label class="form-check-label" for="pkg-unexpected">Make All Unexpected</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detail rows -->
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <strong class="small">Package Details</strong>
+                    <button type="button" class="btn btn-sm btn-outline-primary" id="btn-pkg-add-row">+ Add Row</button>
+                </div>
+                <table class="table table-sm table-bordered" id="tbl-pkg-detail">
+                    <thead>
+                        <tr>
+                            <th>Trans Type</th><th>Description</th>
+                            <th>Expected Type</th><th>Amount Limit</th><th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="pkg-detail-body"></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-sm btn-primary" id="btn-pkg-save">Save Package</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Package Delete -->
+<div class="modal fade" id="modal-pkg-del" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header"><h5 class="modal-title">Delete Package</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body"><p>Delete this package?</p><input type="hidden" id="del-pkg-id" /></div>
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-sm btn-danger" id="btn-pkg-del-confirm">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ════ Data Roaming Modal ════ -->
+<div class="modal fade" id="modal-roam" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header"><h5 class="modal-title" id="modal-roam-title">Roaming Entry</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <input type="hidden" id="roam-id" />
+                <div class="mb-2"><label class="form-label form-label-sm">Country Name <span class="text-danger">*</span></label><input type="text" class="form-control form-control-sm" id="roam-country" /></div>
+                <div class="mb-2"><label class="form-label form-label-sm">Operator Name <span class="text-danger">*</span></label><input type="text" class="form-control form-control-sm" id="roam-operator" /></div>
+                <div class="mb-2"><label class="form-label form-label-sm">Provider</label><select class="form-select form-select-sm" id="roam-provider"></select></div>
+                <div class="mb-2"><label class="form-label form-label-sm">Package</label><select class="form-select form-select-sm" id="roam-pkg"></select></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-sm btn-primary" id="btn-roam-save">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Roaming Delete -->
+<div class="modal fade" id="modal-roam-del" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header"><h5 class="modal-title">Delete Roaming</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body"><p>Delete this roaming entry?</p><input type="hidden" id="del-roam-id" /></div>
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-sm btn-danger" id="btn-roam-del-confirm">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/admin-package.js"></script>
+}

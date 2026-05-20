@@ -14,25 +14,25 @@ Updated after each module finishes. Status values: ☐ pending · ◐ in-progres
 
 ## Phase 1 — Backend foundation
 
-- ☐ `ISpRunner` + Dapper-based `SpRunner`
-- ☐ `SqlConnectionFactory`
-- ☐ `appsettings.json` with `TIS_KDD_NEW` connection (no hardcoded creds)
-- ☐ Windows AD auth wired (`AddNegotiate`)
-- ☐ `AdRoleClaimsTransformer` reading role via SP
-- ☐ Authorization policies for all 7 legacy roles
-- ☐ Serilog logging configured
-- ☐ Shared layout + base partials (`_DataTable`, `_FormGroup`, `_Modal`)
-- ☐ libman manifest with all client-side libs
+- ☑ `ISpRunner` + Dapper-based `SpRunner`
+- ☑ `SqlConnectionFactory`
+- ☑ `appsettings.json` with `TIS_KDD_NEW` connection (no hardcoded creds)
+- ☑ Windows AD auth wired (`AddNegotiate`)
+- ☑ `AdRoleClaimsTransformer` reading role via SP
+- ☑ Authorization policies for all 7 legacy roles
+- ☑ Serilog logging configured
+- ☑ Shared layout + base partials (`_DataTable`, `_FormGroup`, `_Modal`)
+- ☑ libman manifest with all client-side libs
 
 ## Phase 2 — Module migration
 
 | # | Module | Legacy controllers | Status |
 |---|---|---|---|
-| 1 | Admin / Users | `AdminController`, `ADTestController` | ☐ |
+| 1 | Admin / Users | `AdminController`, `ADTestController` | ☑ done 2026-05-20 |
 | 2 | Employee / Telephone | `TelephoneController` | ☐ |
-| 3 | Settings | `SettingController` | ☐ |
-| 4 | Import (Excel) | `ImportController` | ☐ |
-| 5 | Bill management | `BillController` | ☐ |
+| 3 | Settings | `SettingController` | ☑ done 2026-05-20 |
+| 4 | Import (Excel) | `ImportController` | ☑ done 2026-05-20 |
+| 5 | Bill management | `BillController` | ☑ done 2026-05-20 |
 | 6 | Bill reporting | `BillReportController`, `ReportController` | ☐ |
 | 7 | Dashboard & Pivot | `DashboardController`, `PivotController` | ☐ |
 | 8 | Email / SMS | `EmailSmsController`, `SendEmailController` | ☐ |

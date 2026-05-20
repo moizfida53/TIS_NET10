@@ -1,0 +1,274 @@
+@{
+    ViewData["Title"] = "Employee Management";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="fw-bold mb-0">Employee Management</h5>
+</div>
+
+<!-- Tabs -->
+<ul class="nav nav-tabs" id="adminTabs">
+    <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tab-emp">Employees</a></li>
+    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-cc">Cost Centers</a></li>
+    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-country">Countries</a></li>
+    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-manager">Managers</a></li>
+</ul>
+
+<div class="tab-content border border-top-0 rounded-bottom p-3 bg-white">
+
+    <!-- ── Employees Tab ─────────────────────────────────────── -->
+    <div class="tab-pane fade show active" id="tab-emp">
+        <div class="mb-2 text-end">
+            <button class="btn btn-sm btn-primary" id="btn-emp-add">+ Add Employee</button>
+        </div>
+        <table id="dt-emp" class="table table-sm table-bordered table-striped w-100">
+            <thead>
+                <tr>
+                    <th>Name</th><th>Emp No</th><th>Email</th><th>Username</th>
+                    <th>Role</th><th>Country</th><th>Grade</th><th>Active</th><th>Actions</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    <!-- ── Cost Centers Tab ──────────────────────────────────── -->
+    <div class="tab-pane fade" id="tab-cc">
+        <div class="mb-2 text-end">
+            <button class="btn btn-sm btn-primary" id="btn-cc-add">+ Add Cost Center</button>
+        </div>
+        <table id="dt-cc" class="table table-sm table-bordered table-striped w-100">
+            <thead><tr><th>CC Name</th><th>CC Number</th><th>Actions</th></tr></thead>
+        </table>
+    </div>
+
+    <!-- ── Countries Tab ─────────────────────────────────────── -->
+    <div class="tab-pane fade" id="tab-country">
+        <div class="mb-2 text-end">
+            <button class="btn btn-sm btn-primary" id="btn-cnt-add">+ Add Country</button>
+        </div>
+        <table id="dt-country" class="table table-sm table-bordered table-striped w-100">
+            <thead><tr><th>Name</th><th>Code</th><th>Shaya Code</th><th>Exchange Rate</th><th>Currency</th><th>Actions</th></tr></thead>
+        </table>
+    </div>
+
+    <!-- ── Managers Tab ───────────────────────────────────────── -->
+    <div class="tab-pane fade" id="tab-manager">
+        <div class="mb-2 text-end">
+            <button class="btn btn-sm btn-primary" id="btn-mgr-add">+ Add Manager</button>
+        </div>
+        <table id="dt-manager" class="table table-sm table-bordered table-striped w-100">
+            <thead><tr><th>Name</th><th>Employee No</th><th>Actions</th></tr></thead>
+        </table>
+    </div>
+
+</div>
+
+<!-- ═══════════════════ Modals ═══════════════════ -->
+
+<!-- Employee Add/Edit Modal -->
+<div class="modal fade" id="modal-emp" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-emp-title">Add Employee</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="emp-uid" />
+                <div class="row g-2">
+                    <div class="col-md-4">
+                        <label class="form-label form-label-sm">Full Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control form-control-sm" id="emp-name" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label form-label-sm">Employee No <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control form-control-sm" id="emp-no" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label form-label-sm">Username (AD) <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control form-control-sm" id="emp-username" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label form-label-sm">Email</label>
+                        <input type="email" class="form-control form-control-sm" id="emp-email" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label form-label-sm">Organisation</label>
+                        <input type="text" class="form-control form-control-sm" id="emp-org" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label form-label-sm">Description</label>
+                        <input type="text" class="form-control form-control-sm" id="emp-desc" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label form-label-sm">Grade</label>
+                        <input type="text" class="form-control form-control-sm" id="emp-grade" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label form-label-sm">Extension</label>
+                        <input type="text" class="form-control form-control-sm" id="emp-ext" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label form-label-sm">Payroll Category</label>
+                        <input type="text" class="form-control form-control-sm" id="emp-payroll" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label form-label-sm">Cost Center No</label>
+                        <input type="text" class="form-control form-control-sm" id="emp-ccno" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label form-label-sm">Role <span class="text-danger">*</span></label>
+                        <select class="form-select form-select-sm" id="emp-role"></select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label form-label-sm">Manager</label>
+                        <select class="form-select form-select-sm" id="emp-manager">
+                            <option value="0">-- None --</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label form-label-sm">Country / Countries <span class="text-danger">*</span></label>
+                        <select class="form-select form-select-sm" id="emp-countries" multiple></select>
+                        <small class="text-muted">Hold Ctrl to select multiple countries</small>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label form-label-sm">Company ID</label>
+                        <input type="text" class="form-control form-control-sm" id="emp-company" />
+                    </div>
+                    <div class="col-md-3 d-flex align-items-end">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="emp-active" checked />
+                            <label class="form-check-label" for="emp-active">Active</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-sm btn-primary" id="btn-emp-save">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Employee Delete Modal -->
+<div class="modal fade" id="modal-emp-del" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header"><h5 class="modal-title">Delete Employee</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <p>Delete <strong id="del-emp-name"></strong>? This cannot be undone.</p>
+                <input type="hidden" id="del-emp-uid" />
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-sm btn-danger" id="btn-emp-del-confirm">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CC Add/Edit Modal -->
+<div class="modal fade" id="modal-cc" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header"><h5 class="modal-title" id="modal-cc-title">Cost Center</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <input type="hidden" id="cc-uid" />
+                <div class="mb-2"><label class="form-label form-label-sm">CC Name</label><input type="text" class="form-control form-control-sm" id="cc-name" /></div>
+                <div class="mb-2"><label class="form-label form-label-sm">CC Number</label><input type="text" class="form-control form-control-sm" id="cc-num" /></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-sm btn-primary" id="btn-cc-save">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CC Delete -->
+<div class="modal fade" id="modal-cc-del" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header"><h5 class="modal-title">Delete Cost Center</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body"><p>Delete this cost center?</p><input type="hidden" id="del-cc-uid" /></div>
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-sm btn-danger" id="btn-cc-del-confirm">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Country Add/Edit Modal -->
+<div class="modal fade" id="modal-country" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header"><h5 class="modal-title" id="modal-country-title">Country</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <input type="hidden" id="cnt-id" />
+                <div class="row g-2">
+                    <div class="col-6"><label class="form-label form-label-sm">Country Name</label><input type="text" class="form-control form-control-sm" id="cnt-name" /></div>
+                    <div class="col-6"><label class="form-label form-label-sm">Country Code</label><input type="text" class="form-control form-control-sm" id="cnt-code" /></div>
+                    <div class="col-6"><label class="form-label form-label-sm">Shaya Code</label><input type="text" class="form-control form-control-sm" id="cnt-shaya" /></div>
+                    <div class="col-6"><label class="form-label form-label-sm">Exchange Rate</label><input type="number" step="0.0001" class="form-control form-control-sm" id="cnt-rate" /></div>
+                    <div class="col-12"><label class="form-label form-label-sm">Currency</label><input type="text" class="form-control form-control-sm" id="cnt-currency" /></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-sm btn-primary" id="btn-cnt-save">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Country Delete -->
+<div class="modal fade" id="modal-cnt-del" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header"><h5 class="modal-title">Delete Country</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body"><p>Delete this country?</p><input type="hidden" id="del-cnt-id" /></div>
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-sm btn-danger" id="btn-cnt-del-confirm">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Manager Add/Edit Modal -->
+<div class="modal fade" id="modal-manager" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header"><h5 class="modal-title" id="modal-mgr-title">Manager</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <input type="hidden" id="mgr-uid" />
+                <div class="mb-2"><label class="form-label form-label-sm">Name</label><input type="text" class="form-control form-control-sm" id="mgr-name" /></div>
+                <div class="mb-2"><label class="form-label form-label-sm">Employee No</label><input type="text" class="form-control form-control-sm" id="mgr-empno" /></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-sm btn-primary" id="btn-mgr-save">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Manager Delete -->
+<div class="modal fade" id="modal-mgr-del" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header"><h5 class="modal-title">Delete Manager</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body"><p>Delete this manager?</p><input type="hidden" id="del-mgr-uid" /></div>
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-sm btn-danger" id="btn-mgr-del-confirm">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/admin-employee.js"></script>
+}

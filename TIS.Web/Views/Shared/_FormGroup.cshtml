@@ -1,0 +1,16 @@
+@* Pass: Label (string), InputHtml (string, raw HTML for the input) *@
+@{
+    var label    = (string)(ViewData["FgLabel"] ?? "");
+    var required = (bool)(ViewData["FgRequired"] ?? false);
+    var hint     = (string)(ViewData["FgHint"] ?? "");
+}
+<div class="mb-3">
+    <label class="form-label fw-semibold small mb-1">
+        @label @if (required) { <span class="text-danger">*</span> }
+    </label>
+    @RenderSection("FgInput", required: true)
+    @if (!string.IsNullOrEmpty(hint))
+    {
+        <div class="form-text">@hint</div>
+    }
+</div>

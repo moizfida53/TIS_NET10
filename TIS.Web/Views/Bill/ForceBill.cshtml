@@ -1,0 +1,91 @@
+@{
+    ViewData["Title"] = "Force Bill";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">Force Bills</h4>
+    <div class="d-flex gap-2">
+        <button id="btnExport" class="btn btn-success btn-sm">
+            <i class="bi bi-file-earmark-excel me-1"></i>Export to Excel
+        </button>
+        <button id="btnForceBillOpen" class="btn btn-warning btn-sm" disabled>
+            <i class="bi bi-lightning-charge-fill me-1"></i>Force Bill
+        </button>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body p-2">
+        <table id="tblForceBill" class="table table-striped table-hover table-sm w-100">
+            <thead class="table-dark">
+                <tr>
+                    <th><input type="checkbox" id="chkSelectAll" title="Select All"></th>
+                    <th>Bill Date</th>
+                    <th>Mobile</th>
+                    <th>Provider</th>
+                    <th>Employee</th>
+                    <th>Manager</th>
+                    <th>Department</th>
+                    <th class="text-end">Amount</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Force Bill Modal -->
+<div class="modal fade" id="modalForceBill" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-warning">
+                <h5 class="modal-title"><i class="bi bi-lightning-charge-fill me-2"></i>Force Bill Configuration</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Save unidentified calls as:</label>
+                        <select id="cmbCallType" class="form-select">
+                            <option value="1">Business</option>
+                            <option value="2" selected>Personal</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Set bill status to:</label>
+                        <select id="cmbStatus" class="form-select">
+                            <option value="2">Waiting For Line Manager Approval</option>
+                            <option value="4" selected>Closed</option>
+                        </select>
+                    </div>
+                </div>
+                <hr>
+                <p class="fw-semibold mb-2">Additional Options</p>
+                <div class="d-flex flex-column gap-2">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="chkWavRtl">
+                        <label class="form-check-label" for="chkWavRtl">Waive Rental Charges</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="chkWavBus">
+                        <label class="form-check-label" for="chkWavBus">Waive Business Charges</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="chkTrain">
+                        <label class="form-check-label" for="chkTrain">Allow Train</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" id="btnForceBill" class="btn btn-warning">
+                    <i class="bi bi-lightning-charge-fill me-1"></i>Force
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/bill-force.js"></script>
+}

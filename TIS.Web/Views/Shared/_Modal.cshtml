@@ -1,0 +1,25 @@
+@* Parameters: Id (string), Title (string), Size ("sm"|""|"lg"|"xl"), Body (IHtmlContent), Footer (IHtmlContent) *@
+@{
+    var id    = (string)(ViewData["ModalId"]    ?? "modal");
+    var title = (string)(ViewData["ModalTitle"] ?? "");
+    var size  = (string)(ViewData["ModalSize"]  ?? "");
+    var sizeClass = size is "sm" or "lg" or "xl" ? $"modal-{size}" : "";
+}
+
+<div class="modal fade" id="@id" tabindex="-1" aria-labelledby="@(id)Label" aria-hidden="true">
+    <div class="modal-dialog @sizeClass modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white py-2">
+                <h6 class="modal-title fw-semibold" id="@(id)Label">@title</h6>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="@(id)Body">
+                @RenderSection("ModalBody", required: false)
+            </div>
+            <div class="modal-footer py-2" id="@(id)Footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                @RenderSection("ModalFooter", required: false)
+            </div>
+        </div>
+    </div>
+</div>

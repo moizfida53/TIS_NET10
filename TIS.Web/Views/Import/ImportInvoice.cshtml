@@ -1,0 +1,329 @@
+@{
+    ViewData["Title"] = "Import Bills";
+}
+
+<div class="page-header mb-3">
+    <h4 class="mb-0">Import Bills</h4>
+</div>
+
+<div class="card">
+    <div class="card-body p-0">
+        <ul class="nav nav-tabs px-3 pt-3" id="importTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="tab-import" data-bs-toggle="tab"
+                        data-bs-target="#pnlImport" type="button" role="tab">Import</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="tab-mapping" data-bs-toggle="tab"
+                        data-bs-target="#pnlMapping" type="button" role="tab">Excel Mapping</button>
+            </li>
+        </ul>
+
+        <div class="tab-content p-3">
+
+            <!-- ── Import Tab ────────────────────────────────────────── -->
+            <div class="tab-pane fade show active" id="pnlImport" role="tabpanel">
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-2">
+                        <label class="form-label">Month</label>
+                        <select id="cmbMonth" class="form-select">
+                            <option value="">Select Month</option>
+                            <option value="1">January</option>
+                            <option value="2">February</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5">May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Year</label>
+                        <select id="cmbYear" class="form-select"></select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Provider</label>
+                        <select id="cmbProvider" class="form-select">
+                            <option value="">Select Provider</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-3" id="fileSection">
+                    <div class="col-md-3">
+                        <label class="form-label">Select File</label>
+                        <input type="file" class="form-control" id="importFile"
+                               accept=".xls,.xlsx,.mde,.mdb" />
+                        <div id="lblFileName" class="form-text text-muted"></div>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Sheet</label>
+                        <select id="cmbSheet" class="form-select">
+                            <option value="">Select Sheet</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button id="btnSubmit" class="btn btn-success w-100">
+                            <i class="fas fa-upload me-1"></i>Submit
+                        </button>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Total Amount</label>
+                        <div id="lblBillAmount" class="form-control bg-light fw-bold"></div>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button id="btnProcess" class="btn btn-primary w-100" style="display:none">
+                            <i class="fas fa-cog me-1"></i>Process Bill
+                        </button>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-12 d-flex gap-2">
+                        <button id="btnSave" class="btn btn-warning" style="display:none">
+                            <i class="fas fa-save me-1"></i>Save Changes
+                        </button>
+                    </div>
+                </div>
+
+                <!-- null-row grid (shown when import has missing data) -->
+                <div id="importSection" style="display:none" class="mb-3">
+                    <h6 class="text-danger"><i class="fas fa-exclamation-triangle me-1"></i>Rows with missing data — fix before processing</h6>
+                    <div class="table-responsive">
+                        <table id="tblImport" class="table table-sm table-bordered table-hover w-100">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Sub No</th>
+                                    <th>Bill Date</th>
+                                    <th>Call Date</th>
+                                    <th>Trans Type</th>
+                                    <th>Description</th>
+                                    <th>Amount</th>
+                                    <th>Duration</th>
+                                    <th>Call Time</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- upload history -->
+                <h6 class="text-muted mb-2">Upload History</h6>
+                <div class="table-responsive">
+                    <table id="tblHistory" class="table table-sm table-bordered table-hover w-100">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>File Name</th>
+                                <th>Bill Date</th>
+                                <th>Upload Date</th>
+                                <th>Provider</th>
+                                <th>Bill Amount</th>
+                                <th id="colDelete" style="display:none">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div class="mt-2 text-end">
+                    <button id="btnExportHistory" class="btn btn-sm btn-outline-success">
+                        <i class="fas fa-file-excel me-1"></i>Export History
+                    </button>
+                </div>
+            </div>
+
+            <!-- ── Excel Mapping Tab ─────────────────────────────────── -->
+            <div class="tab-pane fade" id="pnlMapping" role="tabpanel">
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-3">
+                        <label class="form-label">Provider</label>
+                        <select id="cmbProvider2" class="form-select">
+                            <option value="">Select Provider</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Type</label>
+                        <select id="cmbType" class="form-select">
+                            <option value="">Select</option>
+                            <option value="1">Excel</option>
+                            <option value="2">Database</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button id="btnPrevSetting" class="btn btn-secondary w-100">
+                            <i class="fas fa-history me-1"></i>Prev Setting
+                        </button>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button id="btnResetMapping" class="btn btn-outline-danger w-100">
+                            <i class="fas fa-undo me-1"></i>Reset
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Excel section -->
+                <div id="excelSection">
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Select File</label>
+                            <input type="file" class="form-control" id="mappingFile"
+                                   accept=".xls,.xlsx" />
+                            <div id="lblMappingFile" class="form-text"></div>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Sheet</label>
+                            <select id="cmbSheet2" class="form-select">
+                                <option value="">Select Sheet</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button id="btnLoadCols" class="btn btn-info w-100">
+                                <i class="fas fa-columns me-1"></i>Load Columns
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Database section -->
+                <div id="dbSection" style="display:none">
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-8">
+                            <label class="form-label">Connection String</label>
+                            <input id="txtConnStr" type="text" class="form-control"
+                                   placeholder="Data Source=...;Initial Catalog=TIS;Integrated Security=True;" />
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button id="btnTestConn" class="btn btn-outline-primary w-100">
+                                <i class="fas fa-plug me-1"></i>Test
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label">View / Table</label>
+                            <select id="cmbViews" class="form-select">
+                                <option value="">Select View</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column mapping table -->
+                <h6 class="mb-2">Field Mapping</h6>
+                <table class="table table-bordered table-sm mb-3" style="max-width:600px">
+                    <thead class="table-light">
+                        <tr><th width="45%">Field</th><th>Excel / DB Column</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1) Telephone Number</td><td><select id="dd1" class="form-select form-select-sm"></select></td></tr>
+                        <tr><td>2) Bill Date (auto)</td><td><input class="form-control form-control-sm bg-light" value="Auto (from import date)" readonly /></td></tr>
+                        <tr><td>3) Transaction Date</td><td><select id="dd3" class="form-select form-select-sm"></select></td></tr>
+                        <tr><td>4) Call Type</td><td><select id="dd4" class="form-select form-select-sm"></select></td></tr>
+                        <tr><td>5) Destination No</td><td><select id="dd5" class="form-select form-select-sm"></select></td></tr>
+                        <tr><td>6) Time of Call</td><td><select id="dd6" class="form-select form-select-sm"></select></td></tr>
+                        <tr><td>7) Duration (Sec)</td><td><select id="dd7" class="form-select form-select-sm"></select></td></tr>
+                        <tr><td>8) Amount</td><td><select id="dd8" class="form-select form-select-sm"></select></td></tr>
+                        <tr><td>9) Bill Number</td><td><select id="dd9" class="form-select form-select-sm"></select></td></tr>
+                    </tbody>
+                </table>
+
+                <div class="d-flex gap-2">
+                    <button id="btnUpdateExcel" class="btn btn-warning">
+                        <i class="fas fa-save me-1"></i>Update Excel Setting
+                    </button>
+                    <button id="btnUpdateDb" class="btn btn-warning" style="display:none">
+                        <i class="fas fa-database me-1"></i>Update DB Setting
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit null-row modal -->
+<div class="modal fade" id="modalEditRow" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Import Row</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="editId" />
+                <div class="mb-3">
+                    <label class="form-label">Sub No</label>
+                    <input type="text" id="editSubNo" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Amount</label>
+                    <input type="number" id="editAmount" class="form-control" step="0.001" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Call Date (yyyy-MM-dd)</label>
+                    <input type="date" id="editCallDate" class="form-control" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button id="btnSaveRow" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bill details modal (shown after ProcessBill) -->
+<div class="modal fade" id="modalBillDetails" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title"><i class="fas fa-check-circle me-2"></i>Bill Processed Successfully</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted mb-3">Summary of unassigned bills:</p>
+                <table class="table table-bordered">
+                    <thead class="table-light">
+                        <tr><th>Category</th><th class="text-end">Count</th><th class="text-end">Amount (KD)</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Unregistered Mobile Numbers</td>
+                            <td class="text-end" id="bd1Count">0</td>
+                            <td class="text-end" id="bd1Amt">0</td>
+                        </tr>
+                        <tr>
+                            <td>Mobile Not Assigned to Any User</td>
+                            <td class="text-end" id="bd2Count">0</td>
+                            <td class="text-end" id="bd2Amt">0</td>
+                        </tr>
+                        <tr>
+                            <td>Assigned but Outside Valid Dates</td>
+                            <td class="text-end" id="bd3Count">0</td>
+                            <td class="text-end" id="bd3Amt">0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <a href="/Import/UnAssigned" class="btn btn-info">
+                    <i class="fas fa-external-link-alt me-1"></i>Go to Unassigned Bills
+                </a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/import-invoice.js"></script>
+}

@@ -1,0 +1,134 @@
+@{
+    ViewData["Title"] = "Telephone Management";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="fw-bold mb-0">Telephone Management</h5>
+</div>
+
+<ul class="nav nav-tabs" id="telTabs">
+    <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tab-tel">Telephones</a></li>
+    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-asg">Assignments</a></li>
+</ul>
+
+<div class="tab-content border border-top-0 rounded-bottom p-3 bg-white">
+
+    <!-- ── Telephones Tab ─────────────────────────────────────────── -->
+    <div class="tab-pane fade show active" id="tab-tel">
+        <div class="mb-2 text-end">
+            <button class="btn btn-sm btn-primary" id="btn-tel-add">+ Add Telephone</button>
+        </div>
+        <table id="dt-tel" class="table table-sm table-bordered table-striped w-100">
+            <thead>
+                <tr>
+                    <th>Sub No</th><th>Provider</th><th>Description</th>
+                    <th>Account No</th><th>Line Type</th><th>Assigned</th><th>Actions</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    <!-- ── Assignments Tab ───────────────────────────────────────── -->
+    <div class="tab-pane fade" id="tab-asg">
+        <div class="mb-2 text-end">
+            <button class="btn btn-sm btn-primary" id="btn-asg-add">+ Assign Number</button>
+        </div>
+        <table id="dt-asg" class="table table-sm table-bordered table-striped w-100">
+            <thead>
+                <tr>
+                    <th>Sub No</th><th>Employee</th><th>Emp No</th><th>CC</th>
+                    <th>Business Limit</th><th>Allowance</th><th>Status</th>
+                    <th>Start</th><th>End</th><th>Actions</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+</div>
+
+<!-- ════ Telephone Modal ════ -->
+<div class="modal fade" id="modal-tel" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header"><h5 class="modal-title" id="modal-tel-title">Telephone</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <input type="hidden" id="tel-id" />
+                <div class="row g-2">
+                    <div class="col-md-4"><label class="form-label form-label-sm">Sub Number <span class="text-danger">*</span></label><input type="text" class="form-control form-control-sm" id="tel-subno" /></div>
+                    <div class="col-md-4"><label class="form-label form-label-sm">Provider <span class="text-danger">*</span></label><select class="form-select form-select-sm" id="tel-provider"></select></div>
+                    <div class="col-md-4"><label class="form-label form-label-sm">Account No</label><input type="text" class="form-control form-control-sm" id="tel-account" /></div>
+                    <div class="col-md-6"><label class="form-label form-label-sm">Description</label><input type="text" class="form-control form-control-sm" id="tel-desc" /></div>
+                    <div class="col-md-6"><label class="form-label form-label-sm">Line Type</label><input type="text" class="form-control form-control-sm" id="tel-linetype" /></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-sm btn-primary" id="btn-tel-save">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Telephone Delete -->
+<div class="modal fade" id="modal-tel-del" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header"><h5 class="modal-title">Delete Telephone</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body"><p>Delete <strong id="del-tel-subno"></strong>?</p><input type="hidden" id="del-tel-id" /></div>
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-sm btn-danger" id="btn-tel-del-confirm">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ════ Assignment Modal ════ -->
+<div class="modal fade" id="modal-asg" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header"><h5 class="modal-title" id="modal-asg-title">Assign Number</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <input type="hidden" id="asg-id" />
+                <div class="row g-2">
+                    <div class="col-md-6"><label class="form-label form-label-sm">Sub Number <span class="text-danger">*</span></label><select class="form-select form-select-sm" id="asg-subno"></select></div>
+                    <div class="col-md-6"><label class="form-label form-label-sm">Employee <span class="text-danger">*</span></label><select class="form-select form-select-sm" id="asg-emp"></select></div>
+                    <div class="col-md-4"><label class="form-label form-label-sm">Cost Center</label><select class="form-select form-select-sm" id="asg-cc"></select></div>
+                    <div class="col-md-4"><label class="form-label form-label-sm">Line Status</label>
+                        <select class="form-select form-select-sm" id="asg-status">
+                            <option value="Active">Active</option>
+                            <option value="Suspended">Suspended</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4"><label class="form-label form-label-sm">Business Limit</label><input type="number" step="0.01" class="form-control form-control-sm" id="asg-blimit" value="0" /></div>
+                    <div class="col-md-4"><label class="form-label form-label-sm">Allowance Limit</label><input type="number" step="0.01" class="form-control form-control-sm" id="asg-alimit" value="0" /></div>
+                    <div class="col-md-4"><label class="form-label form-label-sm">Start Date</label><input type="text" class="form-control form-control-sm flatpickr" id="asg-start" /></div>
+                    <div class="col-md-4"><label class="form-label form-label-sm">End Date</label><input type="text" class="form-control form-control-sm flatpickr" id="asg-end" /></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-sm btn-primary" id="btn-asg-save">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Assignment Delete -->
+<div class="modal fade" id="modal-asg-del" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header"><h5 class="modal-title">Remove Assignment</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body"><p>Remove assignment for <strong id="del-asg-name"></strong>?</p><input type="hidden" id="del-asg-id" /></div>
+            <div class="modal-footer">
+                <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-sm btn-danger" id="btn-asg-del-confirm">Remove</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/admin-telephone.js"></script>
+}

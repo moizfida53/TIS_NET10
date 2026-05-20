@@ -1,0 +1,101 @@
+@{
+    ViewData["Title"] = "System Configuration";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="fw-bold mb-0">System Configuration</h5>
+    <div>
+        <button class="btn btn-sm btn-secondary me-2" id="btn-apply-policy">Apply Policy</button>
+        <button class="btn btn-sm btn-primary" id="btn-cfg-save">Save Configuration</button>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="row g-3">
+
+            <!-- Reminders -->
+            <div class="col-12"><h6 class="text-muted fw-semibold border-bottom pb-1">Reminder Days</h6></div>
+            <div class="col-md-3">
+                <label class="form-label">Employee Reminder</label>
+                <input type="number" id="cfg-emp-reminder" class="form-control form-control-sm" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Force Bill Reminder</label>
+                <input type="number" id="cfg-fb-reminder" class="form-control form-control-sm" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Manager Reminder</label>
+                <input type="number" id="cfg-mgr-reminder" class="form-control form-control-sm" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">LM Reminder</label>
+                <input type="number" id="cfg-lm-reminder" class="form-control form-control-sm" />
+            </div>
+
+            <!-- Email -->
+            <div class="col-12"><h6 class="text-muted fw-semibold border-bottom pb-1">Email / Host</h6></div>
+            <div class="col-md-4">
+                <label class="form-label">SMTP Settings</label>
+                <input type="text" id="cfg-smtp" class="form-control form-control-sm" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Admin Email</label>
+                <input type="text" id="cfg-admin-email" class="form-control form-control-sm" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Host URL</label>
+                <input type="text" id="cfg-host-url" class="form-control form-control-sm" />
+            </div>
+
+            <!-- Grade -->
+            <div class="col-12"><h6 class="text-muted fw-semibold border-bottom pb-1">Grade / Hierarchy</h6></div>
+            <div class="col-md-3">
+                <label class="form-label">Super Grade</label>
+                <input type="number" id="cfg-super-grade" class="form-control form-control-sm" />
+            </div>
+            <div class="col-md-3 d-flex align-items-end pb-1">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="cfg-enable-grade" />
+                    <label class="form-check-label" for="cfg-enable-grade">Enable Grade</label>
+                </div>
+            </div>
+            <div class="col-md-3 d-flex align-items-end pb-1">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="cfg-gm-app" />
+                    <label class="form-check-label" for="cfg-gm-app">Skip GM Approval</label>
+                </div>
+            </div>
+
+            <!-- Flags -->
+            <div class="col-12"><h6 class="text-muted fw-semibold border-bottom pb-1">Behaviour Flags</h6></div>
+
+            @foreach (var flag in new[] {
+                ("cfg-dnt-send-email",     "Do Not Send Email"),
+                ("cfg-hide-per-calls",     "Hide Personal Calls"),
+                ("cfg-enable-discrepancy", "Enable Discrepancy"),
+                ("cfg-skip-app-bus-zero",  "Skip Approval (Business = 0)"),
+                ("cfg-ded-bus-charges",    "Deduct Business Charges"),
+                ("cfg-zero-unlimited",     "Business Zero = Unlimited"),
+                ("cfg-alw-wav",            "Allow Waiver"),
+                ("cfg-enable-delete",      "Enable Delete Button"),
+                ("cfg-alw-train-fb",       "Allow Train Force Bill"),
+                ("cfg-hide-allowance",     "Hide Allowance Limit"),
+                ("cfg-hide-personal",      "Hide Personal Limit")
+            })
+            {
+                <div class="col-md-3 col-sm-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="@flag.Item1" />
+                        <label class="form-check-label" for="@flag.Item1">@flag.Item2</label>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/setting-config.js"></script>
+}
