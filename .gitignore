@@ -1,0 +1,39 @@
+## .NET build output
+bin/
+obj/
+out/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Rider / VS Code / VS
+.vs/
+.vscode/
+.idea/
+
+## Logs
+*.log
+logs/
+App_Data/log/
+
+## Secrets
+appsettings.Production.json
+appsettings.*.local.json
+secrets.json
+*.pfx
+*.snk
+
+## ASP.NET Core
+wwwroot/lib/   ## restored by libman; not committed
+*.compiled
+publish/
+
+## NPM (if introduced later)
+node_modules/
+package-lock.json
+npm-debug.log*
+
+## OS
+Thumbs.db
+.DS_Store

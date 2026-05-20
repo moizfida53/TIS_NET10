@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="TIS.Data/TIS.Data.csproj" />
+  <Project Path="TIS.Web/TIS.Web.csproj" />
+</Solution>
