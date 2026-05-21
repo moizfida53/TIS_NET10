@@ -1,0 +1,119 @@
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">Dashboard</h4>
+    <div class="d-flex align-items-center gap-2">
+        <label class="mb-0 fw-semibold">Year:</label>
+        <select id="selYear" class="form-select form-select-sm" style="width:100px"></select>
+    </div>
+</div>
+
+<!-- KPI Cards -->
+<div class="row g-3 mb-4" id="kpiRow">
+    <div class="col-6 col-md-3">
+        <div class="card border-0 shadow-sm text-center h-100">
+            <div class="card-body">
+                <div class="fs-1 fw-bold text-warning" id="kpiUnidentified">—</div>
+                <div class="text-muted small">Unidentified Bills</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="card border-0 shadow-sm text-center h-100">
+            <div class="card-body">
+                <div class="fs-1 fw-bold text-danger" id="kpiUnassigned">—</div>
+                <div class="text-muted small">Unassigned Bill Amount</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="card border-0 shadow-sm text-center h-100">
+            <div class="card-body">
+                <div class="fs-1 fw-bold text-primary" id="kpiApproval">—</div>
+                <div class="text-muted small">Bills in Approval</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="card border-0 shadow-sm text-center h-100">
+            <div class="card-body">
+                <div class="fs-1 fw-bold text-success" id="kpiSap">—</div>
+                <div class="text-muted small">Total for SAP</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Row 1 -->
+<div class="row g-3 mb-3">
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-header d-flex justify-content-between align-items-center py-2">
+                <span class="fw-semibold">Month Wise Bill Amount</span>
+            </div>
+            <div class="card-body">
+                <canvas id="chart1" height="220"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-header d-flex justify-content-between align-items-center py-2">
+                <span class="fw-semibold">Month Wise Transaction Amount</span>
+                <select id="selTransType" class="form-select form-select-sm" style="width:160px">
+                    <option value="">All Types</option>
+                </select>
+            </div>
+            <div class="card-body">
+                <canvas id="chart2" height="220"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Row 2 -->
+<div class="row g-3 mb-3">
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-header py-2">
+                <span class="fw-semibold">Call Type Bill Amount</span>
+            </div>
+            <div class="card-body">
+                <canvas id="chart4" height="220"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-header d-flex justify-content-between align-items-center py-2">
+                <span class="fw-semibold">International Call Count</span>
+                <select id="selIntCallType" class="form-select form-select-sm" style="width:160px">
+                    <option value="">All Types</option>
+                </select>
+            </div>
+            <div class="card-body">
+                <canvas id="chart6" height="220"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Country Grid -->
+<div class="card shadow-sm">
+    <div class="card-header py-2">
+        <span class="fw-semibold">Country-wise Data</span>
+    </div>
+    <div class="card-body p-2">
+        <table id="tblCountry" class="table table-striped table-hover table-sm w-100">
+            <thead class="table-dark"><tr id="tblCountryHead"></tr></thead>
+            <tbody id="tblCountryBody"></tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <script src="~/js/modules/dashboard.js"></script>
+}

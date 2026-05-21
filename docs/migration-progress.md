@@ -34,7 +34,7 @@ Updated after each module finishes. Status values: ☐ pending · ◐ in-progres
 | 4 | Import (Excel) | `ImportController` | ☑ done 2026-05-20 |
 | 5 | Bill management | `BillController` | ☑ done 2026-05-20 |
 | 6 | Bill reporting | `BillReportController`, `ReportController` | ☑ done 2026-05-21 |
-| 7 | Dashboard & Pivot | `DashboardController`, `PivotController` | ☐ |
+| 7 | Dashboard & Pivot | `DashboardController`, `PivotController` | ☑ done 2026-05-21 |
 | 8 | Email / SMS | `EmailSmsController`, `SendEmailController` | ☐ |
 | 9 | SAP integration | `BapiBIController`, `SyncBapiController` | ☐ |
 | 10 | Audit & APIs | `AuditReportController`, `MarsaAPIController` | ☐ |
