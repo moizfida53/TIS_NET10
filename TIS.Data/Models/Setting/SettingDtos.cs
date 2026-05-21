@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace TIS.Data.Models.Setting;
 
 public class ConfigDto
@@ -72,9 +74,9 @@ public class LineTypeDto
 
 public class EmpSubDto
 {
-    public int    UID          { get; set; }
-    public string EmployeeName { get; set; } = "";
-    public string ORG          { get; set; } = "";
-    public int    SubNoID      { get; set; }
-    public string SubNo        { get; set; } = "";
+    [JsonPropertyName("uid")]          public int    UID          { get; set; }
+    [JsonPropertyName("employeeName")] public string EmployeeName { get; set; } = "";
+    [JsonPropertyName("org")]          public string ORG          { get; set; } = "";
+    [JsonPropertyName("subNoId")]      public int    SubNoID      { get; set; }
+    [JsonPropertyName("subNo")]        public string SubNo        { get; set; } = "";
 }

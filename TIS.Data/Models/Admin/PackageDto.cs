@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace TIS.Data.Models.Admin;
 
 public class PackageMasterDto
@@ -53,7 +55,7 @@ public class ContactDto
 
 public class ManagerDto
 {
-    public int UID { get; set; }
-    public string ManagerName { get; set; } = "";
-    public string EMPLOYEENO { get; set; } = "";
+    [JsonPropertyName("uid")]        public int    UID         { get; set; }
+    [JsonPropertyName("managerName")]public string ManagerName { get; set; } = "";
+    [JsonPropertyName("employeeNo")] public string EMPLOYEENO  { get; set; } = "";
 }

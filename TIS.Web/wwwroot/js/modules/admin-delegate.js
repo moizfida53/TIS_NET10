@@ -63,7 +63,7 @@
     function populateDropdowns(emps) {
         $('#dlg-manager,#dlg-secretary').empty().append('<option value="">-- Select --</option>');
         emps.forEach(e => {
-            const opt = `<option value="${e.uID}">${e.nAME} (${e.eMPLOYEENO})</option>`;
+            const opt = `<option value="${e.uid}">${e.name} (${e.employeeNo})</option>`;
             $('#dlg-manager,#dlg-secretary').append(opt);
         });
     }

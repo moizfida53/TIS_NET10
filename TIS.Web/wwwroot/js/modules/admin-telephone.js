@@ -113,7 +113,7 @@
 
     function populateCCDropdown(costCenters) {
         $('#asg-cc').empty().append('<option value="">-- None --</option>');
-        (costCenters || []).forEach(c => $('#asg-cc').append(`<option value="${c.uID}">${c.cCName}</option>`));
+        (costCenters || []).forEach(c => $('#asg-cc').append(`<option value="${c.uid}">${c.ccName}</option>`));
     }
 
     function populateSubNoDropdown(tels) {
@@ -123,7 +123,7 @@
 
     function populateEmpDropdown(emps) {
         $('#asg-emp').empty().append('<option value="">-- Select Employee --</option>');
-        (emps || []).forEach(e => $('#asg-emp').append(`<option value="${e.uID}">${e.nAME} (${e.eMPLOYEENO})</option>`));
+        (emps || []).forEach(e => $('#asg-emp').append(`<option value="${e.uid}">${e.name} (${e.employeeNo})</option>`));
     }
 
     function bindButtons() {

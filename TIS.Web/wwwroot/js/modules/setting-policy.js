@@ -92,10 +92,10 @@
         $('#pol-emp').empty();
         pageData.employees.forEach(e => {
             const opt = document.createElement('option');
-            opt.value = e.uID;
-            opt.textContent = `${e.employeeName} (${e.oRG}) — ${e.subNo}`;
-            opt.dataset.uid  = e.uID;
-            opt.dataset.snid = e.subNoID;
+            opt.value = e.uid;
+            opt.textContent = `${e.employeeName} (${e.org}) — ${e.subNo}`;
+            opt.dataset.uid  = e.uid;
+            opt.dataset.snid = e.subNoId;
             $('#pol-emp').append(opt);
         });
     }

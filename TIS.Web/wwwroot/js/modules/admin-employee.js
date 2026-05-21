@@ -48,19 +48,19 @@
         dtEmp = $('#dt-emp').DataTable({
             data: data,
             columns: [
-                { data: 'nAME' },
-                { data: 'eMPLOYEENO' },
-                { data: 'eMAIL' },
-                { data: 'uSERNAME' },
-                { data: 'rOLENAME' },
-                { data: 'cOUNTRYNAME' },
-                { data: 'gRADE' },
+                { data: 'name' },
+                { data: 'employeeNo' },
+                { data: 'email' },
+                { data: 'username' },
+                { data: 'roleName' },
+                { data: 'countryName' },
+                { data: 'grade' },
                 { data: 'isActive', render: v => v ? '<span class="badge bg-success">Yes</span>' : '<span class="badge bg-secondary">No</span>' },
                 {
                     data: null, orderable: false, searchable: false,
                     render: function (_, __, row) {
-                        return `<button class="btn btn-xs btn-outline-primary me-1 btn-emp-edit" data-uid="${row.uID}">Edit</button>
-                                <button class="btn btn-xs btn-outline-danger btn-emp-del" data-uid="${row.uID}" data-name="${row.nAME}">Del</button>`;
+                        return `<button class="btn btn-xs btn-outline-primary me-1 btn-emp-edit" data-uid="${row.uid}">Edit</button>
+                                <button class="btn btn-xs btn-outline-danger btn-emp-del" data-uid="${row.uid}" data-name="${row.name}">Del</button>`;
                     }
                 }
             ],
@@ -75,13 +75,13 @@
         dtCC = $('#dt-cc').DataTable({
             data: data,
             columns: [
-                { data: 'cCName' },
-                { data: 'cCNum' },
+                { data: 'ccName' },
+                { data: 'ccNum' },
                 {
                     data: null, orderable: false,
                     render: (_, __, row) =>
-                        `<button class="btn btn-xs btn-outline-primary me-1 btn-cc-edit" data-uid="${row.uID}" data-name="${row.cCName}" data-num="${row.cCNum}">Edit</button>
-                         <button class="btn btn-xs btn-outline-danger btn-cc-del" data-uid="${row.uID}">Del</button>`
+                        `<button class="btn btn-xs btn-outline-primary me-1 btn-cc-edit" data-uid="${row.uid}" data-name="${row.ccName}" data-num="${row.ccNum}">Edit</button>
+                         <button class="btn btn-xs btn-outline-danger btn-cc-del" data-uid="${row.uid}">Del</button>`
                 }
             ]
         });
@@ -104,16 +104,16 @@
         dtCountry = $('#dt-country').DataTable({
             data: data,
             columns: [
-                { data: 'cOUNTRYNAME' },
-                { data: 'cOUNTRYCODE' },
-                { data: 'sHAYACODE' },
-                { data: 'eXCHANGERATE' },
-                { data: 'cURRENCY' },
+                { data: 'countryName' },
+                { data: 'countryCode' },
+                { data: 'shayaCode' },
+                { data: 'exchangeRate' },
+                { data: 'currency' },
                 {
                     data: null, orderable: false,
                     render: (_, __, row) =>
-                        `<button class="btn btn-xs btn-outline-primary me-1 btn-cnt-edit" data-id="${row.cOUNTRYID}" data-name="${row.cOUNTRYNAME}" data-code="${row.cOUNTRYCODE}" data-shaya="${row.sHAYACODE}" data-rate="${row.eXCHANGERATE}" data-currency="${row.cURRENCY}">Edit</button>
-                         <button class="btn btn-xs btn-outline-danger btn-cnt-del" data-id="${row.cOUNTRYID}">Del</button>`
+                        `<button class="btn btn-xs btn-outline-primary me-1 btn-cnt-edit" data-id="${row.countryId}" data-name="${row.countryName}" data-code="${row.countryCode}" data-shaya="${row.shayaCode}" data-rate="${row.exchangeRate}" data-currency="${row.currency}">Edit</button>
+                         <button class="btn btn-xs btn-outline-danger btn-cnt-del" data-id="${row.countryId}">Del</button>`
                 }
             ]
         });
@@ -135,12 +135,12 @@
             data: data,
             columns: [
                 { data: 'managerName' },
-                { data: 'eMPLOYEENO' },
+                { data: 'employeeNo' },
                 {
                     data: null, orderable: false,
                     render: (_, __, row) =>
-                        `<button class="btn btn-xs btn-outline-primary me-1 btn-mgr-edit" data-uid="${row.uID}" data-name="${row.managerName}" data-empno="${row.eMPLOYEENO}">Edit</button>
-                         <button class="btn btn-xs btn-outline-danger btn-mgr-del" data-uid="${row.uID}">Del</button>`
+                        `<button class="btn btn-xs btn-outline-primary me-1 btn-mgr-edit" data-uid="${row.uid}" data-name="${row.managerName}" data-empno="${row.employeeNo}">Edit</button>
+                         <button class="btn btn-xs btn-outline-danger btn-mgr-del" data-uid="${row.uid}">Del</button>`
                 }
             ]
         });
@@ -157,31 +157,31 @@
     // ── Selects ───────────────────────────────────────────────────────────────
     function populateSelects(res) {
         $('#emp-role').empty().append('<option value="">-- Select --</option>');
-        (res.roleList || []).forEach(r => $('#emp-role').append(`<option value="${r.role_ID}">${r.roleName}</option>`));
+        (res.roleList || []).forEach(r => $('#emp-role').append(`<option value="${r.roleId}">${r.roleName}</option>`));
 
         $('#emp-countries').empty();
-        (res.countryList || []).forEach(c => $('#emp-countries').append(`<option value="${c.cOUNTRYID}">${c.cOUNTRYNAME}</option>`));
+        (res.countryList || []).forEach(c => $('#emp-countries').append(`<option value="${c.countryId}">${c.countryName}</option>`));
     }
 
     function populateManagerDropdown(managers) {
         $('#emp-manager').empty().append('<option value="0">-- None --</option>');
-        managers.forEach(m => $('#emp-manager').append(`<option value="${m.uID}">${m.managerName}</option>`));
+        managers.forEach(m => $('#emp-manager').append(`<option value="${m.uid}">${m.managerName}</option>`));
     }
 
     // ── Employee modal open ───────────────────────────────────────────────────
     function openEmpEdit(uid) {
-        const emp = (pageData.dtEmp || []).find(e => e.uID == uid);
+        const emp = (pageData.dtEmp || []).find(e => e.uid == uid);
         if (!emp) return;
         editMode = true;
-        $('#emp-uid').val(emp.uID); $('#emp-name').val(emp.nAME); $('#emp-no').val(emp.eMPLOYEENO);
-        $('#emp-username').val(emp.uSERNAME); $('#emp-email').val(emp.eMAIL); $('#emp-org').val(emp.oRG);
-        $('#emp-desc').val(emp.dESCRIPTION); $('#emp-grade').val(emp.gRADE); $('#emp-ext').val(emp.eXTENSION);
-        $('#emp-payroll').val(emp.pAYROLL); $('#emp-ccno').val(emp.cCNO); $('#emp-company').val(emp.cOMPANYID);
-        $('#emp-role').val(emp.rOLEID); $('#emp-manager').val(emp.mANAGERID);
+        $('#emp-uid').val(emp.uid); $('#emp-name').val(emp.name); $('#emp-no').val(emp.employeeNo);
+        $('#emp-username').val(emp.username); $('#emp-email').val(emp.email); $('#emp-org').val(emp.org);
+        $('#emp-desc').val(emp.description); $('#emp-grade').val(emp.grade); $('#emp-ext').val(emp.extension);
+        $('#emp-payroll').val(emp.payroll); $('#emp-ccno').val(emp.ccNo); $('#emp-company').val(emp.companyId);
+        $('#emp-role').val(emp.roleId); $('#emp-manager').val(emp.managerId);
         $('#emp-active').prop('checked', emp.isActive);
         // Pre-select the employee's country
         $('#emp-countries option').prop('selected', false);
-        $('#emp-countries option[value="' + emp.cOUNTRYID + '"]').prop('selected', true);
+        $('#emp-countries option[value="' + emp.countryId + '"]').prop('selected', true);
         $('#modal-emp-title').text('Edit Employee'); modalEmp.show();
     }
 
