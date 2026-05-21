@@ -25,14 +25,16 @@ public class AdRoleClaimsTransformer(
         var samAccount = winUser.Contains('\\') ? winUser.Split('\\')[^1] : winUser;
 
         // In Development, grant SuperAdmin so any Windows user can browse all pages.
+        // EmpLoginAs must match a real SuperAdmin username in tbluser so sp_GetEmployee
+        // takes the Role=8 branch and returns all employees/countries.
         if (env.IsDevelopment())
         {
             var devIdentity = new ClaimsIdentity();
             devIdentity.AddClaim(new Claim("EmpId", "0"));
             devIdentity.AddClaim(new Claim("EmpRoleId", "8"));
             devIdentity.AddClaim(new Claim("CountryId", "1"));
-            devIdentity.AddClaim(new Claim("EmpLoginName", samAccount));
-            devIdentity.AddClaim(new Claim("EmpLoginAs", samAccount));
+            devIdentity.AddClaim(new Claim("EmpLoginName", "FAjin"));
+            devIdentity.AddClaim(new Claim("EmpLoginAs", "FAjin"));
             devIdentity.AddClaim(new Claim(ClaimTypes.Role, "SuperAdmin"));
             devIdentity.AddClaim(new Claim(ClaimTypes.Role, "Administrator"));
             devIdentity.AddClaim(new Claim(ClaimTypes.Role, "Finance"));
