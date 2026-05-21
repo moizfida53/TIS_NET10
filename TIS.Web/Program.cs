@@ -54,6 +54,7 @@ try
     builder.Services.AddScoped<IDashboardRepository>(sp => new DashboardRepository(sp.GetRequiredService<ISpRunner>()));
     builder.Services.AddScoped<IPivotRepository>(sp => new PivotRepository(sp.GetRequiredService<ISpRunner>()));
     builder.Services.AddScoped<IEmailSmsRepository>(sp => new EmailSmsRepository(sp.GetRequiredService<ISpRunner>()));
+    builder.Services.AddScoped<ISapRepository>(sp => new SapRepository(sp.GetRequiredService<ISpRunner>()));
     builder.Services.AddScoped<EmailService>();
     builder.Services.AddScoped<SmsService>();
     builder.Services.AddHttpClient();

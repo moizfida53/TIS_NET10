@@ -1,0 +1,56 @@
+@{
+    ViewData["Title"] = "Finance Report";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">Finance Report</h4>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h5 class="mb-3">
+            Total Closed Bills Pending for Post to Finance:
+            <span id="pendingBills" class="text-danger fw-bold">0</span>
+        </h5>
+
+        <div class="d-flex gap-2 mb-3 flex-wrap">
+            <button id="btnPostSap" class="btn btn-primary" onclick="postSap()">
+                <i class="bi bi-send"></i> Post Bills to Finance
+            </button>
+            <button id="btnMarkPosted" class="btn btn-warning" onclick="markAsPosted()">
+                <i class="bi bi-check2-square"></i> Mark as Posted
+            </button>
+            <button class="btn btn-success" onclick="exportToExcel()">
+                <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 50 50" class="me-1">
+                    <path d="M28.8125.03125L.8125 5.34375C.34 5.43 0 5.86 0 6.34v37.31c0 .48.34.91.8125 1L28.8125 49.97C28.875 49.98 28.9375 50 29 50c.23 0 .445-.07.625-.22C29.855 49.59 30 49.3 30 49V1c0-.3-.145-.59-.375-.78-.23-.19-.52-.24-.8125-.19zM32 6h15c1.1 0 2 .9 2 2v34c0 1.1-.9 2-2 2H32v-7h2v-2h-2v-5h2v-2h-2v-5h2v-2h-2v-5h2v-2h-2V6zm4 7h8v2h-8v-2zm-25.3 2.69h5.125l2.688 5.594c.21.44.398.984.562 1.594h.032c.105-.364.308-.934.593-1.656l2.97-5.532h4.687L21.75 24.94l5.75 9.437h-4.969l-3.25-6.094c-.12-.227-.246-.645-.375-1.25h-.031c-.063.286-.21.73-.438 1.313L19.188 34.375h-5l5.97-9.344-5.458-9.344zM36 20h8v2h-8v-2zm0 7h8v2h-8v-2zm0 8h8v2h-8v-2z"/>
+                </svg>
+                Export to Excel
+            </button>
+        </div>
+
+        <table id="tblSapReport" class="table table-bordered table-hover table-sm w-100">
+            <thead class="table-dark">
+                <tr>
+                    <th><input type="checkbox" id="chkAll"></th>
+                    <th>Bill Date</th>
+                    <th>Telephone No.</th>
+                    <th>Employee No.</th>
+                    <th>Employee Name</th>
+                    <th>Line Manager</th>
+                    <th>Total Amount</th>
+                    <th>Business Charges</th>
+                    <th>Personal Charges</th>
+                    <th>Deductible Amount</th>
+                    <th>Cost Center</th>
+                    <th>Cost Center Code</th>
+                    <th>Department</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/sap-pending.js"></script>
+}
