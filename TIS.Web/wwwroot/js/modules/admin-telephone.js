@@ -18,13 +18,18 @@
     $(function () { loadData(); bindButtons(); });
 
     function loadData() {
-        $.get('/Admin/GetTelData').done(function (res) {
+        $.when(
+            $.get('/Admin/GetTelData'),
+            $.get('/Admin/GetCC')
+        ).done(function (telRes, ccRes) {
+            const res = telRes[0];
             pageData = res;
             renderTelTable(res.dtTel);
             renderAsgTable(res.dtAsg);
             populateProviders(res.dtProvider);
             populateSubNoDropdown(res.dtTel);
             populateEmpDropdown(res.dtEmp);
+            populateCCDropdown(ccRes[0].dtCC);
         }).fail(() => TIS.toast('error', 'Failed to load telephone data'));
     }
 
@@ -102,8 +107,13 @@
     }
 
     function populateProviders(providers) {
-        $('#tel-provider,#asg-cc').empty();
+        $('#tel-provider').empty();
         (providers || []).forEach(p => $('#tel-provider').append(`<option value="${p.providerID}">${p.providerName}</option>`));
+    }
+
+    function populateCCDropdown(costCenters) {
+        $('#asg-cc').empty().append('<option value="">-- None --</option>');
+        (costCenters || []).forEach(c => $('#asg-cc').append(`<option value="${c.uID}">${c.cCName}</option>`));
     }
 
     function populateSubNoDropdown(tels) {

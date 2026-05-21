@@ -29,7 +29,7 @@
             pageData = res;
             renderEmployeeTable(res.dtEmp);
             renderCCTable(res.dtCC);
-            renderCountryTable(res.CountryList);
+            renderCountryTable(res.countryList);
             populateSelects(res);
         }).fail(function () { TIS.toast('error', 'Failed to load employee data'); });
     }
@@ -157,7 +157,7 @@
     // ── Selects ───────────────────────────────────────────────────────────────
     function populateSelects(res) {
         $('#emp-role').empty().append('<option value="">-- Select --</option>');
-        (res.roleList || []).forEach(r => $('#emp-role').append(`<option value="${r.rolE_ID}">${r.roleName}</option>`));
+        (res.roleList || []).forEach(r => $('#emp-role').append(`<option value="${r.role_ID}">${r.roleName}</option>`));
 
         $('#emp-countries').empty();
         (res.countryList || []).forEach(c => $('#emp-countries').append(`<option value="${c.cOUNTRYID}">${c.cOUNTRYNAME}</option>`));

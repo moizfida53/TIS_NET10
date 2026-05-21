@@ -4,7 +4,10 @@ using TIS.Data.Repositories;
 
 namespace TIS.Web.Auth;
 
-public class AdRoleClaimsTransformer(IAdminRepository repo, ILogger<AdRoleClaimsTransformer> log)
+public class AdRoleClaimsTransformer(
+    IAdminRepository repo,
+    IWebHostEnvironment env,
+    ILogger<AdRoleClaimsTransformer> log)
     : IClaimsTransformation
 {
     private static readonly string[] RoleNames =
@@ -18,8 +21,25 @@ public class AdRoleClaimsTransformer(IAdminRepository repo, ILogger<AdRoleClaims
         if (principal.Identity?.IsAuthenticated != true) return principal;
         if (principal.HasClaim(c => c.Type == "EmpId")) return principal;
 
-        var winUser = principal.Identity.Name ?? "";
+        var winUser    = principal.Identity.Name ?? "";
         var samAccount = winUser.Contains('\\') ? winUser.Split('\\')[^1] : winUser;
+
+        // In Development, grant SuperAdmin so any Windows user can browse all pages.
+        if (env.IsDevelopment())
+        {
+            var devIdentity = new ClaimsIdentity();
+            devIdentity.AddClaim(new Claim("EmpId", "0"));
+            devIdentity.AddClaim(new Claim("EmpRoleId", "8"));
+            devIdentity.AddClaim(new Claim("CountryId", "1"));
+            devIdentity.AddClaim(new Claim("EmpLoginName", samAccount));
+            devIdentity.AddClaim(new Claim("EmpLoginAs", samAccount));
+            devIdentity.AddClaim(new Claim(ClaimTypes.Role, "SuperAdmin"));
+            devIdentity.AddClaim(new Claim(ClaimTypes.Role, "Administrator"));
+            devIdentity.AddClaim(new Claim(ClaimTypes.Role, "Finance"));
+            devIdentity.AddClaim(new Claim(ClaimTypes.Role, "LineManager"));
+            principal.AddIdentity(devIdentity);
+            return principal;
+        }
 
         try
         {
