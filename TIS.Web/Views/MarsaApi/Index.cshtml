@@ -1,0 +1,52 @@
+@{
+    ViewData["Title"] = "Marsa API";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">Marsa API</h4>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <p class="text-muted">
+            This page provides access to Marsa API endpoints for querying and updating bill data.
+            The endpoints below are available for integration testing.
+        </p>
+        <table class="table table-bordered table-sm">
+            <thead class="table-secondary">
+                <tr>
+                    <th>Endpoint</th>
+                    <th>Method</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>/MarsaApi/GetCountofBillsByUserName?userName=</code></td>
+                    <td><span class="badge bg-success">GET</span></td>
+                    <td>Returns count of bills for a given username</td>
+                </tr>
+                <tr>
+                    <td><code>/MarsaApi/GetPendingApprovalCountByUserName?userName=</code></td>
+                    <td><span class="badge bg-success">GET</span></td>
+                    <td>Returns pending approval count for a given username</td>
+                </tr>
+                <tr>
+                    <td><code>/MarsaApi/GetBillDetailsByBillId?billId=</code></td>
+                    <td><span class="badge bg-success">GET</span></td>
+                    <td>Returns bill details for a given bill ID</td>
+                </tr>
+                <tr>
+                    <td><code>/MarsaApi/UpdateBillByBillId?billId=&status=&comments=</code></td>
+                    <td><span class="badge bg-success">GET</span></td>
+                    <td>Updates bill status and comments</td>
+                </tr>
+                <tr>
+                    <td><code>/MarsaApi/ApprovalBillList?username=</code></td>
+                    <td><span class="badge bg-success">GET</span></td>
+                    <td>Returns pending approval bills for a manager</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

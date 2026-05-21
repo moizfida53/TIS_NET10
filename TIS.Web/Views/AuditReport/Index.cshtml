@@ -1,0 +1,114 @@
+@{
+    ViewData["Title"] = "Audit Report";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">Audit Report</h4>
+</div>
+
+<div class="card shadow-sm mb-3">
+    <div class="card-body">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">Start Date</label>
+                <input type="text" id="startDate" class="form-control flatpickr" placeholder="yyyy-MM-dd HH:mm:ss">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">End Date</label>
+                <input type="text" id="endDate" class="form-control flatpickr" placeholder="yyyy-MM-dd HH:mm:ss">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">Event Type</label>
+                <select id="cmbEvents" class="form-select">
+                    <option value="">-- Select Event --</option>
+                    <option value="1">MANAGE EMPLOYEE</option>
+                    <option value="2">ADD NUMBER</option>
+                    <option value="3">ASSIGN NUMBER</option>
+                    <option value="4">DELEGATE BILLS</option>
+                    <option value="9">IMPORT MOBILE BILLS</option>
+                    <option value="11">UNASSIGNED BILLS</option>
+                    <option value="12">FORCE BILLS</option>
+                    <option value="13">REIMBURSE BILLS</option>
+                    <option value="14">CHANGE BILL STATUS</option>
+                    <option value="15">REASSIGN BILLS</option>
+                    <option value="17">CONFIGURATION</option>
+                    <option value="18">MANAGE CALLTYPE</option>
+                    <option value="21">ANALYSE/LOGIN</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">Status</label>
+                <select id="cmbStatus" class="form-select">
+                    <option value="">-- Select Status --</option>
+                    <option value="Success">Success</option>
+                    <option value="Fail">Fail</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-semibold">User</label>
+                <select id="cmbUser" class="form-select select2" style="width:100%">
+                    <option value="">-- Select User --</option>
+                </select>
+            </div>
+            <div class="col-md-6 d-flex align-items-end gap-2">
+                <button class="btn btn-primary" onclick="search()">
+                    <i class="bi bi-search"></i> Search
+                </button>
+                <button class="btn btn-secondary" onclick="clearSearch()">
+                    <i class="bi bi-x-circle"></i> Clear
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <table id="tblAuditReport" class="table table-bordered table-hover table-sm w-100">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Action</th>
+                    <th>Result</th>
+                    <th>User</th>
+                    <th>User ID</th>
+                    <th>Date</th>
+                    <th>Form</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Audit Details Modal -->
+<div class="modal fade" id="modalAuditDetails" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Audit Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <table id="tblAuditDetails" class="table table-bordered table-sm w-100">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th>ID</th>
+                            <th>S.No</th>
+                            <th>Master ID</th>
+                            <th>Field Name</th>
+                            <th>Old Value</th>
+                            <th>New Value</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/audit-report.js"></script>
+}
