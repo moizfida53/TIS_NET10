@@ -35,9 +35,9 @@ Updated after each module finishes. Status values: ☐ pending · ◐ in-progres
 | 5 | Bill management | `BillController` | ☑ done 2026-05-20 |
 | 6 | Bill reporting | `BillReportController`, `ReportController` | ☑ done 2026-05-21 |
 | 7 | Dashboard & Pivot | `DashboardController`, `PivotController` | ☑ done 2026-05-21 |
-| 8 | Email / SMS | `EmailSmsController`, `SendEmailController` | ☐ |
-| 9 | SAP integration | `BapiBIController`, `SyncBapiController` | ☐ |
-| 10 | Audit & APIs | `AuditReportController`, `MarsaAPIController` | ☐ |
+| 8 | Email / SMS | `EmailSmsController`, `SendEmailController` | ☑ done 2026-05-21 |
+| 9 | SAP integration | `BapiBIController`, `SyncBapiController`, `SAP_PendingController` | ☑ done 2026-05-21 (SAP Pending fully working; BAPI stubs — NCo not .NET10 compatible) |
+| 10 | Audit & APIs | `AuditReportController`, `MarsaAPIController` | ☑ done 2026-05-21 |
 
 ## Phase 3 — Frontend modernization (parallel with Phase 2)
 
@@ -45,10 +45,11 @@ Track per-view jqx removal in commit messages; no separate checklist.
 
 ## Phase 4 — Reports / SAP / Excel
 
-- ☐ All RDLC reports re-implemented as Razor HTML + QuestPDF
-- ☐ ClosedXML export helper service
-- ☐ SAP NCo .NET 10 compatibility confirmed (or shim built)
-- ☐ MailKit email service replaces `SmtpClient`
+- ☑ MailKit email service (EmailService.cs) replaces `SmtpClient`
+- ☑ ClosedXML Excel export wired in BillReport module
+- ☑ QuestPDF PDF export wired in BillReport module
+- ◐ SAP NCo .NET 10 compat: SapBridge shim pending (BAPI stubs in place)
+- ☐ All RDLC reports re-implemented (BillReport HTML done; remaining RDLC none)
 
 ## Phase 5 — Cutover
 
