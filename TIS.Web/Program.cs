@@ -50,6 +50,7 @@ try
     builder.Services.AddScoped<IImportRepository>(sp => new ImportRepository(sp.GetRequiredService<ISpRunner>(), connStr));
     builder.Services.AddScoped<ImportService>(sp => new ImportService(connStr, sp.GetRequiredService<IImportRepository>()));
     builder.Services.AddScoped<IBillRepository>(sp => new BillRepository(sp.GetRequiredService<ISpRunner>(), connStr));
+    builder.Services.AddScoped<IBillReportRepository>(sp => new BillReportRepository(sp.GetRequiredService<ISpRunner>()));
 
     // ── MVC ─────────────────────────────────────────────────────────────
     builder.Services.AddControllersWithViews();
