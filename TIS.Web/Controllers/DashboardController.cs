@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TIS.Data.Repositories;
 
@@ -7,11 +7,11 @@ namespace TIS.Web.Controllers;
 [Authorize(Roles = "Administrator,SuperAdmin")]
 public class DashboardController(
     IDashboardRepository repo,
-    ILogger<DashboardController> logger) : Controller
+    ILogger<DashboardController> logger) : TisController
 {
     public IActionResult Index() => View();
 
-    // ── KPI ────────────────────────────────────────────────────────────────
+    // â”€â”€ KPI â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpGet]
     public async Task<IActionResult> GetKpi()
@@ -28,7 +28,7 @@ public class DashboardController(
         }
     }
 
-    // ── Charts ─────────────────────────────────────────────────────────────
+    // â”€â”€ Charts â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpGet]
     public async Task<IActionResult> GetChart1(int year) =>
@@ -58,7 +58,7 @@ public class DashboardController(
     public async Task<IActionResult> GetChart7(int year, string callType = "", string outCountry = "") =>
         await ChartResult(() => repo.GetChart7Async(year, callType, outCountry), "GetChart7");
 
-    // ── Lookup data ────────────────────────────────────────────────────────
+    // â”€â”€ Lookup data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpGet]
     public async Task<IActionResult> GetTransTypes() =>
@@ -80,7 +80,7 @@ public class DashboardController(
     public async Task<IActionResult> GetCountryGridMonthly(int year, int month) =>
         await ChartResult(() => repo.GetCountryGridMonthlyAsync(year, month), "GetCountryGridMonthly");
 
-    // ── Helper ─────────────────────────────────────────────────────────────
+    // â”€â”€ Helper â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     private async Task<IActionResult> ChartResult(Func<Task<IEnumerable<dynamic>>> fetch, string name)
     {
@@ -100,3 +100,4 @@ public class DashboardController(
         }
     }
 }
+

@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TIS.Data.Repositories;
 using TIS.Web.Models.Pivot;
@@ -8,7 +8,7 @@ namespace TIS.Web.Controllers;
 [Authorize(Roles = "Administrator,SuperAdmin")]
 public class PivotController(
     IPivotRepository repo,
-    ILogger<PivotController> logger) : Controller
+    ILogger<PivotController> logger) : TisController
 {
     public IActionResult Index() => View();
 
@@ -57,3 +57,4 @@ public class PivotController(
         }
     }
 }
+

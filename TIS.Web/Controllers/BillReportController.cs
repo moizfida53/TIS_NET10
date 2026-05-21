@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TIS.Data.Repositories;
 using TIS.Web.Models.BillReport;
@@ -8,15 +8,15 @@ namespace TIS.Web.Controllers;
 [Authorize(Roles = "Administrator,SuperAdmin")]
 public class BillReportController(
     IBillReportRepository repo,
-    ILogger<BillReportController> logger) : Controller
+    ILogger<BillReportController> logger) : TisController
 {
-    // ── Views ──────────────────────────────────────────────────────────────
+    // â”€â”€ Views â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     public IActionResult Index()     => View("BillReport");
     public IActionResult BillReport() => View(nameof(BillReport));
     public IActionResult Report()    => View(nameof(Report));
 
-    // ── Bill Report ────────────────────────────────────────────────────────
+    // â”€â”€ Bill Report â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpGet]
     public async Task<IActionResult> GetBillReportFilters()
@@ -49,7 +49,7 @@ public class BillReportController(
         }
     }
 
-    // ── Pending Bills Report ───────────────────────────────────────────────
+    // â”€â”€ Pending Bills Report â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpGet]
     public async Task<IActionResult> GetReportFilters()
@@ -81,7 +81,7 @@ public class BillReportController(
         }
     }
 
-    // ── Report Chart ───────────────────────────────────────────────────────
+    // â”€â”€ Report Chart â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpGet]
     public async Task<IActionResult> GetReportChart()
@@ -98,3 +98,4 @@ public class BillReportController(
         }
     }
 }
+

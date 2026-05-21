@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TIS.Data.Repositories;
 using TIS.Web.Models.Sap;
@@ -6,9 +6,9 @@ using TIS.Web.Models.Sap;
 namespace TIS.Web.Controllers;
 
 [Authorize(Policy = "Admin")]
-public class SapController(ISapRepository repo, ILogger<SapController> logger) : Controller
+public class SapController(ISapRepository repo, ILogger<SapController> logger) : TisController
 {
-    // ── SAP Pending ──────────────────────────────────────────────────────
+    // â”€â”€ SAP Pending â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     public IActionResult SapPending() => View();
 
@@ -54,11 +54,11 @@ public class SapController(ISapRepository repo, ILogger<SapController> logger) :
     public IActionResult PostSap()
     {
         // SAP NCo (SAPMobile proxy) is not compatible with .NET 10.
-        // BAPI posting requires the TIS.SapBridge shim — not yet implemented.
+        // BAPI posting requires the TIS.SapBridge shim â€” not yet implemented.
         return Ok(new { Message = "SAP posting is not available in this version. Please use the legacy system for BAPI export." });
     }
 
-    // ── BAPI Sync (stub — SAP NCo not available on .NET 10) ─────────────
+    // â”€â”€ BAPI Sync (stub â€” SAP NCo not available on .NET 10) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     public IActionResult SyncBapi() => View();
 
@@ -67,7 +67,7 @@ public class SapController(ISapRepository repo, ILogger<SapController> logger) :
     public IActionResult SyncBapiRun()
         => Ok(new { Message = "SAP BAPI sync requires the SAP NCo connector which is not compatible with .NET 10. This feature is not available." });
 
-    // ── Helpers ──────────────────────────────────────────────────────────
+    // â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     private async Task LogAsync(string functionName, Exception ex)
     {
@@ -76,3 +76,4 @@ public class SapController(ISapRepository repo, ILogger<SapController> logger) :
         catch { /* don't let audit logging mask the original error */ }
     }
 }
+

@@ -2,60 +2,12 @@
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "permissions": {
     "allow": [
-      "Bash(dotnet build:*)",
-      "Bash(dotnet run:*)",
-      "Bash(dotnet test:*)",
-      "Bash(dotnet add package:*)",
-      "Bash(dotnet add reference:*)",
-      "Bash(dotnet new:*)",
-      "Bash(dotnet sln:*)",
-      "Bash(dotnet restore:*)",
-      "Bash(dotnet format:*)",
-      "Bash(dotnet ef:*)",
-      "Bash(dotnet user-secrets:*)",
-      "Bash(libman:*)",
-      "Bash(npm install:*)",
-      "Bash(npm run:*)",
-      "Bash(git status:*)",
-      "Bash(git diff:*)",
-      "Bash(git log:*)",
-      "Bash(git add:*)",
-      "Bash(git commit:*)",
-      "Bash(git branch:*)",
-      "Bash(git checkout:*)",
-      "Bash(sqlcmd:*)",
-      "PowerShell(dotnet *)",
-      "PowerShell(sqlcmd *)",
-      "PowerShell(libman *)",
-      "PowerShell(git *)",
-      "PowerShell(Get-ChildItem *)",
-      "PowerShell(Select-String *)",
-      "PowerShell(Test-Path *)",
-      "Read(F:\\DAD Projects\\TIS_MVC\\**)",
-      "Read(F:\\DAD Projects\\TIS_NET10\\**)"
+      "Bash(*)",
+      "PowerShell(*)",
+      "Read(*)",
+      "Edit(*)",
+      "Write(*)"
     ],
-    "deny": [
-      "Bash(rm -rf:*)",
-      "Bash(git push --force:*)",
-      "Bash(git push -f:*)",
-      "Bash(git reset --hard:*)",
-      "PowerShell(Remove-Item *-Recurse*)",
-      "PowerShell(*sa#1234*)",
-      "Read(**/.env)",
-      "Read(**/appsettings.Production.json)"
-    ]
-  },
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "powershell -NoProfile -Command \"if ($env:CLAUDE_FILE_PATHS -match '\\.cs$') { dotnet format whitespace --include $env:CLAUDE_FILE_PATHS --no-restore 2>$null }\""
-          }
-        ]
-      }
-    ]
+    "deny": []
   }
 }

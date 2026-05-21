@@ -1,11 +1,11 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TIS.Data.Repositories;
 
 namespace TIS.Web.Controllers;
 
 [Authorize(Policy = "Admin")]
-public class MarsaApiController(IMarsaApiRepository repo, ILogger<MarsaApiController> logger) : Controller
+public class MarsaApiController(IMarsaApiRepository repo, ILogger<MarsaApiController> logger) : TisController
 {
     public IActionResult Index() => View();
 
@@ -57,3 +57,4 @@ public class MarsaApiController(IMarsaApiRepository repo, ILogger<MarsaApiContro
             : Ok(new { Message = "No Data Found" });
     }
 }
+

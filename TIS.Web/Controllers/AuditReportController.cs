@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TIS.Data.Models.Audit;
 using TIS.Data.Repositories;
@@ -6,7 +6,7 @@ using TIS.Data.Repositories;
 namespace TIS.Web.Controllers;
 
 [Authorize(Policy = "Admin")]
-public class AuditReportController(IAuditRepository repo, ILogger<AuditReportController> logger) : Controller
+public class AuditReportController(IAuditRepository repo, ILogger<AuditReportController> logger) : TisController
 {
     public IActionResult Index() => View();
 
@@ -44,3 +44,4 @@ public class AuditReportController(IAuditRepository repo, ILogger<AuditReportCon
         return Ok(new { dtDetails = details });
     }
 }
+

@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TIS.Data.Repositories;
 using TIS.Data.Services;
@@ -11,13 +11,13 @@ public class EmailSmsController(
     IEmailSmsRepository repo,
     EmailService         emailSvc,
     SmsService           smsSvc,
-    ILogger<EmailSmsController> logger) : Controller
+    ILogger<EmailSmsController> logger) : TisController
 {
-    // ── Views ──────────────────────────────────────────────────────────────
+    // â”€â”€ Views â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     public IActionResult Index()     => View();
     public IActionResult SendEmail() => View();
 
-    // ── Email groups ───────────────────────────────────────────────────────
+    // â”€â”€ Email groups â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     [HttpGet]
     public async Task<IActionResult> GetGroups()
     {
@@ -61,7 +61,7 @@ public class EmailSmsController(
         return Json(new { Message = "Deleted Successfuly" });
     }
 
-    // ── Email templates ────────────────────────────────────────────────────
+    // â”€â”€ Email templates â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     [HttpGet]
     public async Task<IActionResult> GetTemplate()
     {
@@ -90,7 +90,7 @@ public class EmailSmsController(
         return Json(new { Message = "Deleted" });
     }
 
-    // ── Send email (compose + group) ───────────────────────────────────────
+    // â”€â”€ Send email (compose + group) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     [HttpPost]
     public async Task<IActionResult> SendGroupEmail([FromBody] SendGroupEmailRequest req)
     {
@@ -114,7 +114,7 @@ public class EmailSmsController(
         return Json(new { Message = "Success" });
     }
 
-    // ── Email log ──────────────────────────────────────────────────────────
+    // â”€â”€ Email log â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     [HttpGet]
     public async Task<IActionResult> GetLogEmails()
     {
@@ -147,7 +147,7 @@ public class EmailSmsController(
         return Json(new { Message = "Deleted" });
     }
 
-    // ── SMS groups ─────────────────────────────────────────────────────────
+    // â”€â”€ SMS groups â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     [HttpGet]
     public async Task<IActionResult> GetSMSGroups()
     {
@@ -184,7 +184,7 @@ public class EmailSmsController(
         return Json(new { Message = "Deleted Successfuly" });
     }
 
-    // ── SMS templates ──────────────────────────────────────────────────────
+    // â”€â”€ SMS templates â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     [HttpGet]
     public async Task<IActionResult> GetSMSTemplate()
     {
@@ -213,7 +213,7 @@ public class EmailSmsController(
         return Json(new { Message = "Deleted" });
     }
 
-    // ── Send SMS (compose + group) ─────────────────────────────────────────
+    // â”€â”€ Send SMS (compose + group) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     [HttpPost]
     public async Task<IActionResult> SendSMS([FromBody] SendSmsRequest req)
     {
@@ -231,7 +231,7 @@ public class EmailSmsController(
         return Json(new { Message = "Success" });
     }
 
-    // ── SMS log ────────────────────────────────────────────────────────────
+    // â”€â”€ SMS log â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     [HttpGet]
     public async Task<IActionResult> GetLogSMS()
     {
@@ -263,7 +263,7 @@ public class EmailSmsController(
         return Json(new { Message = "Deleted" });
     }
 
-    // ── Bill reminder emails ───────────────────────────────────────────────
+    // â”€â”€ Bill reminder emails â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     [HttpGet]
     public async Task<IActionResult> GetEmail()
     {
@@ -317,3 +317,4 @@ public class EmailSmsController(
         return Json(new { Message = "Success" });
     }
 }
+

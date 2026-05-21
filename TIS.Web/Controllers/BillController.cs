@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using TIS.Data.Repositories;
@@ -9,20 +9,20 @@ namespace TIS.Web.Controllers;
 [Authorize(Roles = "SuperAdmin")]
 public class BillController(
     IBillRepository repo,
-    ILogger<BillController> logger) : Controller
+    ILogger<BillController> logger) : TisController
 {
     private int EmpId     => int.Parse(User.FindFirstValue("EmpId")     ?? "0");
     private int EmpRoleId => int.Parse(User.FindFirstValue("EmpRoleId") ?? "0");
     private int CountryId => int.Parse(User.FindFirstValue("CountryId") ?? "0");
 
-    // ── Views ─────────────────────────────────────────────────────────────
+    // â”€â”€ Views â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     public IActionResult Index()         => View("ForceBill");
     public IActionResult ChangeStatus()  => View(nameof(ChangeStatus));
     public IActionResult ReAssignBill()  => View(nameof(ReAssignBill));
     public IActionResult ReImburseBill() => View(nameof(ReImburseBill));
 
-    // ── Force Bill ────────────────────────────────────────────────────────
+    // â”€â”€ Force Bill â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpGet]
     public async Task<IActionResult> GetForceBill()
@@ -59,7 +59,7 @@ public class BillController(
         }
     }
 
-    // ── Shared search data ────────────────────────────────────────────────
+    // â”€â”€ Shared search data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpGet]
     public async Task<IActionResult> GetSearchData(bool isStatus)
@@ -81,7 +81,7 @@ public class BillController(
         }
     }
 
-    // ── Change Status ─────────────────────────────────────────────────────
+    // â”€â”€ Change Status â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpPost]
     public async Task<IActionResult> Search([FromBody] BillSearchRequest req)
@@ -113,7 +113,7 @@ public class BillController(
         }
     }
 
-    // ── Re-Assign Bill ────────────────────────────────────────────────────
+    // â”€â”€ Re-Assign Bill â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpPost]
     public async Task<IActionResult> SearchOpenBill([FromBody] BillSearchRequest req)
@@ -145,7 +145,7 @@ public class BillController(
         }
     }
 
-    // ── Reimburse Bill ────────────────────────────────────────────────────
+    // â”€â”€ Reimburse Bill â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpPost]
     public async Task<IActionResult> SearchCloseBill([FromBody] BillSearchRequest req)
@@ -178,3 +178,4 @@ public class BillController(
         }
     }
 }
+

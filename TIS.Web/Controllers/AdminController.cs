@@ -1,4 +1,4 @@
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TIS.Data.Models.Admin;
@@ -8,16 +8,16 @@ using TIS.Web.Models.Admin;
 namespace TIS.Web.Controllers;
 
 [Authorize(Roles = "SuperAdmin")]
-public class AdminController(IAdminRepository repo, ILogger<AdminController> logger) : Controller
+public class AdminController(IAdminRepository repo, ILogger<AdminController> logger) : TisController
 {
-    // ── Claim helpers ─────────────────────────────────────────────────────────
+    // â”€â”€ Claim helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     private int EmpId     => int.Parse(User.FindFirstValue("EmpId")     ?? "0");
     private int EmpRoleId => int.Parse(User.FindFirstValue("EmpRoleId") ?? "0");
     private int CountryId => int.Parse(User.FindFirstValue("CountryId") ?? "0");
     private string EmpLoginAs => User.FindFirstValue("EmpLoginAs") ?? "";
 
-    // ── Pages ─────────────────────────────────────────────────────────────────
+    // â”€â”€ Pages â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [Authorize(Roles = "Administrator,SuperAdmin")]
     public IActionResult Index()
@@ -31,7 +31,7 @@ public class AdminController(IAdminRepository repo, ILogger<AdminController> log
     public IActionResult Delegate()  => View("DelegateBills");
     public IActionResult Package()   => View();
 
-    // ── Employee ──────────────────────────────────────────────────────────────
+    // â”€â”€ Employee â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpGet]
     public async Task<JsonResult> GetUser()
@@ -124,7 +124,7 @@ public class AdminController(IAdminRepository repo, ILogger<AdminController> log
         }
     }
 
-    // ── Cost Center ───────────────────────────────────────────────────────────
+    // â”€â”€ Cost Center â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpGet]
     public async Task<JsonResult> GetCC()
@@ -186,7 +186,7 @@ public class AdminController(IAdminRepository repo, ILogger<AdminController> log
         }
     }
 
-    // ── Country ───────────────────────────────────────────────────────────────
+    // â”€â”€ Country â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpPost]
     public async Task<JsonResult> AddCountry([FromBody] CountryDto country)
@@ -233,7 +233,7 @@ public class AdminController(IAdminRepository repo, ILogger<AdminController> log
         }
     }
 
-    // ── Manager ───────────────────────────────────────────────────────────────
+    // â”€â”€ Manager â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpPost]
     public async Task<JsonResult> AddManager([FromBody] ManagerRequest req)
@@ -280,7 +280,7 @@ public class AdminController(IAdminRepository repo, ILogger<AdminController> log
         }
     }
 
-    // ── Telephone ─────────────────────────────────────────────────────────────
+    // â”€â”€ Telephone â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpGet]
     public async Task<JsonResult> GetTelData()
@@ -438,7 +438,7 @@ public class AdminController(IAdminRepository repo, ILogger<AdminController> log
         }
     }
 
-    // ── Delegation ────────────────────────────────────────────────────────────
+    // â”€â”€ Delegation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpGet]
     public async Task<JsonResult> GetDelegate()
@@ -446,7 +446,7 @@ public class AdminController(IAdminRepository repo, ILogger<AdminController> log
         try
         {
             var dlgs = await repo.GetDelegationsAsync(CountryId);
-            // Employee list for the manager/secretary pickers — reuse GetUser data
+            // Employee list for the manager/secretary pickers â€” reuse GetUser data
             var empData = await repo.GetEmployeePageDataAsync(EmpLoginAs);
             return Json(new
             {
@@ -521,7 +521,7 @@ public class AdminController(IAdminRepository repo, ILogger<AdminController> log
         }
     }
 
-    // ── Package ───────────────────────────────────────────────────────────────
+    // â”€â”€ Package â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpGet]
     public async Task<JsonResult> GetPkgData()
@@ -644,7 +644,7 @@ public class AdminController(IAdminRepository repo, ILogger<AdminController> log
         }
     }
 
-    // ── Contact ───────────────────────────────────────────────────────────────
+    // â”€â”€ Contact â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpPost]
     public async Task<JsonResult> SaveContact([FromBody] ContactDto contact)
@@ -666,7 +666,7 @@ public class AdminController(IAdminRepository repo, ILogger<AdminController> log
         }
     }
 
-    // ── Data Roaming ──────────────────────────────────────────────────────────
+    // â”€â”€ Data Roaming â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpGet]
     public async Task<JsonResult> GetDataRoaming()
@@ -728,3 +728,4 @@ public class AdminController(IAdminRepository repo, ILogger<AdminController> log
         }
     }
 }
+

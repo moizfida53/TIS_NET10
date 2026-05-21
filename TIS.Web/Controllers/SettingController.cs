@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using TIS.Data.Models.Setting;
@@ -8,18 +8,18 @@ using TIS.Web.Models.Setting;
 namespace TIS.Web.Controllers;
 
 [Authorize(Roles = "SuperAdmin")]
-public class SettingController(ISettingRepository repo, ILogger<SettingController> logger) : Controller
+public class SettingController(ISettingRepository repo, ILogger<SettingController> logger) : TisController
 {
     private int EmpRoleId => int.Parse(User.FindFirstValue("EmpRoleId") ?? "0");
     private int CountryId => int.Parse(User.FindFirstValue("CountryId") ?? "0");
 
-    // ── Views ─────────────────────────────────────────────────────────────
+    // â”€â”€ Views â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     public IActionResult Index()    => View("Config");
     public IActionResult Policy()   => View("ManageCallType");
     public IActionResult Provider() => View();
 
-    // ── Config ────────────────────────────────────────────────────────────
+    // â”€â”€ Config â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpGet]
     public async Task<IActionResult> GetConfig()
@@ -51,7 +51,7 @@ public class SettingController(ISettingRepository repo, ILogger<SettingControlle
         }
     }
 
-    // ── Policy ────────────────────────────────────────────────────────────
+    // â”€â”€ Policy â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpGet]
     public async Task<IActionResult> GetPolicyData()
@@ -191,7 +191,7 @@ public class SettingController(ISettingRepository repo, ILogger<SettingControlle
         }
     }
 
-    // ── Provider ──────────────────────────────────────────────────────────
+    // â”€â”€ Provider â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpGet]
     public async Task<IActionResult> GetProviders()
@@ -253,3 +253,4 @@ public class SettingController(ISettingRepository repo, ILogger<SettingControlle
         }
     }
 }
+

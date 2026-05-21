@@ -1,4 +1,4 @@
-using System.DirectoryServices;
+﻿using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 using System.Runtime.Versioning;
 using Microsoft.AspNetCore.Authorization;
@@ -8,9 +8,9 @@ namespace TIS.Web.Controllers;
 
 [Authorize(Roles = "SuperAdmin")]
 [SupportedOSPlatform("windows")]
-public class ADTestController(IConfiguration config) : Controller
+public class ADTestController(IConfiguration config) : TisController
 {
-    // ── AD settings (read from appsettings.json ActiveDirectory section) ──────
+    // â”€â”€ AD settings (read from appsettings.json ActiveDirectory section) â”€â”€â”€â”€â”€â”€
 
     private string AdDomain     => config["ActiveDirectory:Domain"]             ?? string.Empty;
     private string AttrDisplay  => config["ActiveDirectory:Attributes:DisplayName"]    ?? "displayName";
@@ -18,17 +18,17 @@ public class ADTestController(IConfiguration config) : Controller
     private string AttrDept     => config["ActiveDirectory:Attributes:Department"]     ?? "department";
     private string AttrEmpNo    => config["ActiveDirectory:Attributes:EmployeeNumber"] ?? "employeeNumber";
 
-    // ── Pages ─────────────────────────────────────────────────────────────────
+    // â”€â”€ Pages â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     public IActionResult Index() => View();
 
-    // ── AJAX ──────────────────────────────────────────────────────────────────
+    // â”€â”€ AJAX â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpPost]
     public JsonResult TestConnection()
     {
         if (string.IsNullOrWhiteSpace(AdDomain))
-            return Json(new { success = false, message = "FAIL — 'ActiveDirectory:Domain' key is missing from appsettings.json." });
+            return Json(new { success = false, message = "FAIL â€” 'ActiveDirectory:Domain' key is missing from appsettings.json." });
 
         try
         {
@@ -38,13 +38,13 @@ public class ADTestController(IConfiguration config) : Controller
             {
                 success = ok,
                 message = ok
-                    ? "SUCCESS — Connected to: " + ctx.ConnectedServer
-                    : "FAIL — Could not reach a domain controller."
+                    ? "SUCCESS â€” Connected to: " + ctx.ConnectedServer
+                    : "FAIL â€” Could not reach a domain controller."
             });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = "FAIL — " + ex.Message });
+            return Json(new { success = false, message = "FAIL â€” " + ex.Message });
         }
     }
 
@@ -55,7 +55,7 @@ public class ADTestController(IConfiguration config) : Controller
             return Json(new { success = false, message = "Please enter a username." });
 
         if (string.IsNullOrWhiteSpace(AdDomain))
-            return Json(new { success = false, message = "FAIL — 'ActiveDirectory:Domain' key is missing from appsettings.json." });
+            return Json(new { success = false, message = "FAIL â€” 'ActiveDirectory:Domain' key is missing from appsettings.json." });
 
         try
         {
@@ -103,7 +103,7 @@ public class ADTestController(IConfiguration config) : Controller
             return Json(new { success = false, message = "Please enter a mobile number." });
 
         if (string.IsNullOrWhiteSpace(AdDomain))
-            return Json(new { success = false, message = "FAIL — 'ActiveDirectory:Domain' key is missing from appsettings.json." });
+            return Json(new { success = false, message = "FAIL â€” 'ActiveDirectory:Domain' key is missing from appsettings.json." });
 
         try
         {
@@ -115,24 +115,24 @@ public class ADTestController(IConfiguration config) : Controller
 
             var entry = user.GetUnderlyingObject() as DirectoryEntry;
             if (entry == null)
-                return Json(new { success = false, message = "FAIL — Could not retrieve directory entry for user." });
+                return Json(new { success = false, message = "FAIL â€” Could not retrieve directory entry for user." });
 
             entry.Properties["mobile"].Value = mobileNumber.Trim();
             entry.CommitChanges();
 
-            return Json(new { success = true, message = $"SUCCESS — Mobile number updated for '{username}'." });
+            return Json(new { success = true, message = $"SUCCESS â€” Mobile number updated for '{username}'." });
         }
         catch (UnauthorizedAccessException)
         {
-            return Json(new { success = false, message = "FAIL — The application account does not have write permission to Active Directory." });
+            return Json(new { success = false, message = "FAIL â€” The application account does not have write permission to Active Directory." });
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = "FAIL — " + ex.Message });
+            return Json(new { success = false, message = "FAIL â€” " + ex.Message });
         }
     }
 
-    // ── Helpers ───────────────────────────────────────────────────────────────
+    // â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     private static string GetProperty(DirectoryEntry? entry, string attr)
     {
@@ -149,3 +149,4 @@ public class ADTestController(IConfiguration config) : Controller
         return string.Empty;
     }
 }
+

@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using TIS.Data.Models.Import;
@@ -13,7 +13,7 @@ public class ImportController(
     IImportRepository repo,
     ImportService importSvc,
     IWebHostEnvironment env,
-    ILogger<ImportController> logger) : Controller
+    ILogger<ImportController> logger) : TisController
 {
     private int  EmpId     => int.Parse(User.FindFirstValue("EmpId")     ?? "0");
     private int  EmpRoleId => int.Parse(User.FindFirstValue("EmpRoleId") ?? "0");
@@ -21,12 +21,12 @@ public class ImportController(
 
     private string BillsFolder => Path.Combine(env.ContentRootPath, "Bills");
 
-    // ── Views ─────────────────────────────────────────────────────────────
+    // â”€â”€ Views â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     public IActionResult Index()    => View("ImportInvoice");
     public IActionResult UnAssigned() => View("UnAssignedInvoice");
 
-    // ── Upload History ────────────────────────────────────────────────────
+    // â”€â”€ Upload History â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpGet]
     public async Task<IActionResult> GetUploadHistory()
@@ -43,7 +43,7 @@ public class ImportController(
         }
     }
 
-    // ── File Upload (save to disk) ─────────────────────────────────────────
+    // â”€â”€ File Upload (save to disk) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpPost]
     public async Task<IActionResult> Upload(IFormFile[] fileToUpload)
@@ -58,7 +58,7 @@ public class ImportController(
         return View("ImportInvoice");
     }
 
-    // ── Sheet Names ───────────────────────────────────────────────────────
+    // â”€â”€ Sheet Names â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpGet]
     public IActionResult FillSheet(string fileName)
@@ -77,7 +77,7 @@ public class ImportController(
         }
     }
 
-    // ── Column Names (for mapping screen) ────────────────────────────────
+    // â”€â”€ Column Names (for mapping screen) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpGet]
     public IActionResult UploadSetting(string fileName, string sheetName)
@@ -96,7 +96,7 @@ public class ImportController(
         }
     }
 
-    // ── Process Import ────────────────────────────────────────────────────
+    // â”€â”€ Process Import â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpPost]
     public async Task<IActionResult> UploadFile([FromBody] UploadFileRequest req)
@@ -138,7 +138,7 @@ public class ImportController(
         }
     }
 
-    // ── Commit Import → Call Records ──────────────────────────────────────
+    // â”€â”€ Commit Import â†’ Call Records â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpPost]
     public async Task<IActionResult> ProcessBill([FromBody] ProcessBillRequest req)
@@ -166,7 +166,7 @@ public class ImportController(
         }
     }
 
-    // ── Update a null import row (fix SQL injection) ───────────────────────
+    // â”€â”€ Update a null import row (fix SQL injection) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpPost]
     public async Task<IActionResult> UpdateImport([FromBody] UpdateImportRequest req)
@@ -184,7 +184,7 @@ public class ImportController(
         }
     }
 
-    // ── Provider column mapping ───────────────────────────────────────────
+    // â”€â”€ Provider column mapping â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpGet]
     public async Task<IActionResult> GetSetting(int provider)
@@ -227,7 +227,7 @@ public class ImportController(
         return Json(new { DbBased = s?.DbBased.ToString() ?? "False" });
     }
 
-    // ── Delete Bill ───────────────────────────────────────────────────────
+    // â”€â”€ Delete Bill â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpPost]
     public async Task<IActionResult> DeleteBill([FromBody] DeleteBillRequest req)
@@ -244,7 +244,7 @@ public class ImportController(
         }
     }
 
-    // ── Unassigned Bills ──────────────────────────────────────────────────
+    // â”€â”€ Unassigned Bills â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     [HttpGet]
     public async Task<IActionResult> GetUnAssignedBill()
@@ -268,7 +268,7 @@ public class ImportController(
         return Json(new { Message = $"{count} Bills Generated" });
     }
 
-    // ── Private helper ────────────────────────────────────────────────────
+    // â”€â”€ Private helper â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
     private static object BuildBillDetails(BillDetailDto? d) => d == null
         ? new
@@ -284,3 +284,4 @@ public class ImportController(
             AssignedButOutsideValidDates = new { CountOfBills = d.AssignedButOutsideValidDates_Count, TotalAmount = d.AssignedButOutsideValidDates_Amount }
         };
 }
+
