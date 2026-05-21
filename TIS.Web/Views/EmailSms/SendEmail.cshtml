@@ -1,0 +1,75 @@
+@{
+    ViewData["Title"] = "Send Email (Bill Reminders)";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">Bill Reminder Emails</h4>
+    <div class="d-flex gap-2">
+        <button class="btn btn-outline-secondary btn-sm" onclick="setReminder()">
+            <i class="bi bi-bell me-1"></i>Set Reminder
+        </button>
+        <button class="btn btn-outline-secondary btn-sm" onclick="setForceBillReminder()">
+            <i class="bi bi-bell-fill me-1"></i>Set Force Bill Reminder
+        </button>
+        <button class="btn btn-primary btn-sm" onclick="sendSelected()">
+            <i class="bi bi-send me-1"></i>Send Selected
+        </button>
+        <button class="btn btn-outline-danger btn-sm" onclick="deleteSelected()">
+            <i class="bi bi-trash me-1"></i>Delete Selected
+        </button>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <table id="tblSendEmail" class="table table-sm table-bordered w-100">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="chkAllBill" /></th>
+                    <th>Bill Date</th>
+                    <th>Subject</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>CC</th>
+                    <th>Sent</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<!-- Edit modal -->
+<div class="modal fade" id="modalEditEmail" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Email</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="editBillId" />
+                <div class="mb-2">
+                    <label class="form-label">Email Text</label>
+                    <textarea id="editEmailText" class="form-control" rows="5"></textarea>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Email To</label>
+                    <input id="editEmailTo" class="form-control" />
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">CC</label>
+                    <input id="editCC" class="form-control" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary btn-sm" onclick="saveEdit()">Save</button>
+                <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/send-email.js"></script>
+}

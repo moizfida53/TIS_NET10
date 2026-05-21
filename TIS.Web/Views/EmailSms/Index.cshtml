@@ -1,0 +1,332 @@
+@{
+    ViewData["Title"] = "Email / SMS";
+}
+
+<h4 class="mb-3">Email / SMS</h4>
+
+<ul class="nav nav-tabs mb-3" id="emailSmsTabs" role="tablist">
+    <li class="nav-item">
+        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabEmail" type="button">
+            <i class="bi bi-envelope me-1"></i>Email
+        </button>
+    </li>
+    <li class="nav-item">
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabSms" type="button" id="btnTabSms">
+            <i class="bi bi-phone me-1"></i>SMS
+        </button>
+    </li>
+</ul>
+
+<div class="tab-content">
+
+    <!-- ═══ EMAIL TAB ═══════════════════════════════════════════════════════ -->
+    <div class="tab-pane fade show active" id="tabEmail">
+        <div class="row g-3 mb-3">
+            <div class="col-md-7">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header fw-semibold">Compose Email</div>
+                    <div class="card-body">
+                        <input type="hidden" id="hidTemplateID" />
+                        <div class="mb-2 row align-items-center">
+                            <label class="col-sm-3 col-form-label">Groups</label>
+                            <div class="col-sm-7">
+                                <select id="selEmailGroups" class="form-select form-select-sm" multiple size="4"></select>
+                            </div>
+                            <div class="col-sm-2">
+                                <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#modalEmailGroup">
+                                    <i class="bi bi-people-fill"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mb-2 row align-items-center">
+                            <label class="col-sm-3 col-form-label">Template</label>
+                            <div class="col-sm-9">
+                                <select id="selTemplate" class="form-select form-select-sm">
+                                    <option value="">— Select Template —</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-2 row align-items-center">
+                            <label class="col-sm-3 col-form-label">Template Name</label>
+                            <div class="col-sm-9">
+                                <input id="txtNewTemplateName" class="form-control form-control-sm" />
+                            </div>
+                        </div>
+                        <div class="mb-2 row align-items-center">
+                            <label class="col-sm-3 col-form-label">Subject</label>
+                            <div class="col-sm-9">
+                                <input id="txtSubject" class="form-control form-control-sm" />
+                            </div>
+                        </div>
+                        <div class="mb-2 row">
+                            <label class="col-sm-3 col-form-label">Body</label>
+                            <div class="col-sm-9">
+                                <textarea id="txtTemplate" class="form-control form-control-sm" rows="5"></textarea>
+                                <small class="text-muted">{0}=Name {1}=Amount {2}=Date {3}=Mobile {4}=Manager {5}=Provider {6}=Link</small>
+                            </div>
+                        </div>
+                        <div class="mb-2 row align-items-center">
+                            <label class="col-sm-3 col-form-label">Add Email</label>
+                            <div class="col-sm-7">
+                                <input id="txtEmailTo" class="form-control form-control-sm" placeholder="additional@email.com" />
+                            </div>
+                            <div class="col-sm-2">
+                                <button class="btn btn-outline-secondary btn-sm" onclick="addEmail()">Add</button>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2 mt-3">
+                            <button class="btn btn-success btn-sm" onclick="createTemplate()">Create Template</button>
+                            <button class="btn btn-primary btn-sm" onclick="saveTemplate()">Save Template</button>
+                            <button class="btn btn-warning btn-sm" onclick="sendGroupEmail()">
+                                <i class="bi bi-send me-1"></i>Send Email
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header fw-semibold">Recipients</div>
+                    <div class="card-body">
+                        <textarea id="txtEmails" class="form-control" rows="14" placeholder="Emails loaded from selected groups…"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span class="fw-semibold">Email Log</span>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-primary btn-sm" onclick="resendEmails()">
+                        <i class="bi bi-send me-1"></i>Send Selected
+                    </button>
+                    <button class="btn btn-outline-danger btn-sm" onclick="deleteEmails()">
+                        <i class="bi bi-trash me-1"></i>Delete Selected
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <table id="tblEmailLog" class="table table-sm table-bordered w-100">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="chkAllEmail" /></th>
+                            <th>Template</th>
+                            <th>Subject</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Sent</th>
+                            <th>Sent On</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ SMS TAB ══════════════════════════════════════════════════════════ -->
+    <div class="tab-pane fade" id="tabSms">
+        <div class="row g-3 mb-3">
+            <div class="col-md-7">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span class="fw-semibold">Compose SMS</span>
+                        <span>Balance: <strong id="lblBalance">—</strong></span>
+                    </div>
+                    <div class="card-body">
+                        <input type="hidden" id="hidSMSTemplateID" />
+                        <div class="mb-2 row align-items-center">
+                            <label class="col-sm-3 col-form-label">Groups</label>
+                            <div class="col-sm-7">
+                                <select id="selSmsGroups" class="form-select form-select-sm" multiple size="4"></select>
+                            </div>
+                            <div class="col-sm-2">
+                                <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#modalSmsGroup">
+                                    <i class="bi bi-people-fill"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mb-2 row align-items-center">
+                            <label class="col-sm-3 col-form-label">Template</label>
+                            <div class="col-sm-9">
+                                <select id="selSmsTemplate" class="form-select form-select-sm">
+                                    <option value="">— Select Template —</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-2 row align-items-center">
+                            <label class="col-sm-3 col-form-label">Template Name</label>
+                            <div class="col-sm-9">
+                                <input id="txtNewSMSTemplateName" class="form-control form-control-sm" />
+                            </div>
+                        </div>
+                        <div class="mb-2 row align-items-center">
+                            <label class="col-sm-3 col-form-label">Language</label>
+                            <div class="col-sm-9">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="lang" id="chkEnglish" value="1" onchange="onLangChange(1)" />
+                                    <label class="form-check-label" for="chkEnglish">English (160)</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="lang" id="chkArabic" value="2" onchange="onLangChange(2)" />
+                                    <label class="form-check-label" for="chkArabic">Arabic (70)</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-2 row">
+                            <label class="col-sm-3 col-form-label">Message</label>
+                            <div class="col-sm-9">
+                                <textarea id="txtSMSTemplate" class="form-control form-control-sm" rows="5" disabled></textarea>
+                                <small id="smsCounter" class="text-muted">0 / 160</small>
+                            </div>
+                        </div>
+                        <div class="mb-2 row align-items-center">
+                            <label class="col-sm-3 col-form-label">Add Mobile</label>
+                            <div class="col-sm-7">
+                                <input id="txtSMSTo" class="form-control form-control-sm" placeholder="mobile number" />
+                            </div>
+                            <div class="col-sm-2">
+                                <button class="btn btn-outline-secondary btn-sm" onclick="addMobile()">Add</button>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2 mt-3">
+                            <button class="btn btn-success btn-sm" onclick="createSmsTemplate()">Create Template</button>
+                            <button class="btn btn-primary btn-sm" onclick="saveSmsTemplate()">Save Template</button>
+                            <button class="btn btn-warning btn-sm" onclick="sendSms()">
+                                <i class="bi bi-send me-1"></i>Send SMS
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header fw-semibold">Mobile Numbers</div>
+                    <div class="card-body">
+                        <textarea id="txtMobileNos" class="form-control" rows="14" placeholder="Mobiles loaded from selected groups…"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span class="fw-semibold">SMS Log</span>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-primary btn-sm" onclick="resendSms()">
+                        <i class="bi bi-send me-1"></i>Send Selected
+                    </button>
+                    <button class="btn btn-outline-danger btn-sm" onclick="deleteSms()">
+                        <i class="bi bi-trash me-1"></i>Delete Selected
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <table id="tblSmsLog" class="table table-sm table-bordered w-100">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="chkAllSms" /></th>
+                            <th>Template</th>
+                            <th>Mobile</th>
+                            <th>Message</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══ EMAIL GROUP MODAL ══════════════════════════════════════════════════ -->
+<div class="modal fade" id="modalEmailGroup" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Email Groups</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="hidGroupID" />
+                <div class="row g-3 mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Group Name</label>
+                        <input id="txtGroupName" class="form-control form-control-sm mb-2" />
+                        <div class="d-flex gap-2">
+                            <button id="btnAddGroup"    class="btn btn-success  btn-sm" onclick="addGroup()">Add</button>
+                            <button id="btnUpdateGroup" class="btn btn-primary  btn-sm d-none" onclick="updateGroup()">Update</button>
+                            <button id="btnDeleteGroup" class="btn btn-danger   btn-sm d-none" onclick="deleteGroup()">Delete</button>
+                            <button class="btn btn-secondary btn-sm" onclick="clearGroup()">Clear</button>
+                        </div>
+                        <hr />
+                        <label class="form-label fw-semibold">Existing Groups</label>
+                        <table id="tblEmailGroups" class="table table-sm table-hover w-100">
+                            <thead><tr><th>Group Name</th></tr></thead>
+                        </table>
+                    </div>
+                    <div class="col-md-8">
+                        <label class="form-label fw-semibold">Select Employees</label>
+                        <table id="tblEmailEmployees" class="table table-sm table-bordered w-100">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox" id="chkAllEmpEmail" /></th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Department</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══ SMS GROUP MODAL ════════════════════════════════════════════════════ -->
+<div class="modal fade" id="modalSmsGroup" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">SMS Groups</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="hidSmsGroupID" />
+                <div class="row g-3 mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Group Name</label>
+                        <input id="txtSmsGroupName" class="form-control form-control-sm mb-2" />
+                        <div class="d-flex gap-2">
+                            <button id="btnAddSmsGroup"    class="btn btn-success  btn-sm" onclick="addSmsGroup()">Add</button>
+                            <button id="btnUpdateSmsGroup" class="btn btn-primary  btn-sm d-none" onclick="updateSmsGroup()">Update</button>
+                            <button id="btnDeleteSmsGroup" class="btn btn-danger   btn-sm d-none" onclick="deleteSmsGroup()">Delete</button>
+                            <button class="btn btn-secondary btn-sm" onclick="clearSmsGroup()">Clear</button>
+                        </div>
+                        <hr />
+                        <label class="form-label fw-semibold">Existing Groups</label>
+                        <table id="tblSmsGroups" class="table table-sm table-hover w-100">
+                            <thead><tr><th>Group Name</th></tr></thead>
+                        </table>
+                    </div>
+                    <div class="col-md-8">
+                        <label class="form-label fw-semibold">Select Employees</label>
+                        <table id="tblSmsEmployees" class="table table-sm table-bordered w-100">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox" id="chkAllEmpSms" /></th>
+                                    <th>Name</th>
+                                    <th>Mobile</th>
+                                    <th>Department</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/email-sms.js"></script>
+}
